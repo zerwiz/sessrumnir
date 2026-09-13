@@ -1,27 +1,55 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
-  <!-- Charcoal rounded background -->
-  <rect width="512" height="512" rx="77" fill="#36454F"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Slate -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
 
-  <!-- Pi letterforms: official brand marks, scaled from 800 -> 512 -->
-  <g transform="translate(5.5, 5.5) scale(0.62625)">
-    <!-- P shape: outer boundary clockwise, inner hole counter-clockwise -->
-    <path fill="#e67e22" fill-rule="evenodd" d="
-      M165.29 165.29
-      H517.36
-      V400
-      H400
-      V517.36
-      H282.65
-      V634.72
-      H165.29
-      Z
-      M282.65 282.65
-      V400
-      H400
-      V282.65
-      Z
-    "/>
-    <!-- i dot -->
-    <path fill="#e67e22" d="M517.36 400 H634.72 V634.72 H517.36 Z"/>
+    <!-- Outer Dark Metal Forging -->
+    <linearGradient id="dark-metal" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#334155" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+
+    <!-- Inner Cyan Edge / Chisel Highlight -->
+    <linearGradient id="cyan-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7dd3fc" />
+      <stop offset="50%" stop-color="#0ea5e9" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+
+    <!-- Drop Shadow for Depth -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Canvas -->
+  <rect width="512" height="512" rx="48" fill="url(#bg-grad)" stroke="#1e293b" stroke-width="4"/>
+
+  <!-- Master Group with Drop Shadow -->
+  <g filter="url(#shadow)">
+    
+    <!-- 1. THICK OUTER BASE (The Iron Mass) -->
+    <g fill="none" stroke="url(#dark-metal)" stroke-width="48" stroke-linecap="square" stroke-linejoin="miter">
+      <!-- Algiz Y-Stem & Branches -->
+      <path d="M 144 144 L 256 256 L 368 144 M 256 256 V 352" />
+      <!-- Top Anvil Bar -->
+      <path d="M 128 352 H 384" />
+      <!-- Bottom Anvil Bar (Slightly narrower) -->
+      <path d="M 160 432 H 352" />
+    </g>
+
+    <!-- 2. THIN INNER HIGHLIGHT (The Glowing Chiseled Edge) -->
+    <g fill="none" stroke="url(#cyan-glow)" stroke-width="12" stroke-linecap="square" stroke-linejoin="miter">
+      <!-- Algiz Y-Stem & Branches -->
+      <path d="M 144 144 L 256 256 L 368 144 M 256 256 V 352" />
+      <!-- Top Anvil Bar -->
+      <path d="M 128 352 H 384" />
+      <!-- Bottom Anvil Bar -->
+      <path d="M 160 432 H 352" />
+    </g>
+
   </g>
 </svg>
