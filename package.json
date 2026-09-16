@@ -163,5 +163,12 @@
       "uninstallerIcon": "resources/icons/icon.ico",
       "artifactName": "Pi-Desktop-${version}-${os}-${arch}-setup.${ext}"
     }
-  }
+  },
+  "private": false,
+  "files": [
+    "src",
+    "dist",
+    "resources",
+    "electron"
+  ]
 }
