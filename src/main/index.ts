@@ -24,7 +24,7 @@ const WORKSPACE_ENV_VAR = 'PI_DESKTOP_WORKSPACE'
 
 // Electron's development executable otherwise registers as Electron on Windows,
 // which makes the taskbar and notification identity use Electron branding.
-app.setName('Pi Desktop')
+app.setName('Sessrúmnir')
 if (process.platform === 'win32') app.setAppUserModelId('dev.pi.desktop-gui')
 
 // Suppress EPIPE errors from closed subprocess pipes
