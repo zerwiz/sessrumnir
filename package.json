@@ -1,6 +1,6 @@
 {
   "name": "@zerwiz/sessrumnir",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Desktop GUI frontend for the Pi coding agent",
   "main": "out/main/index.js",
   "desktopName": "pi-desktop.desktop",
@@ -39,8 +39,7 @@
     "package:win": "electron-vite build && electron-builder --win",
     "package:win:nsis": "electron-vite build && electron-builder --win nsis",
     "package:win:portable": "electron-vite build && electron-builder --win portable",
-    "package:all": "electron-vite build && electron-builder --linux --mac --win",
-    "postinstall": "node scripts/postinstall.js"
+    "package:all": "electron-vite build && electron-builder --linux --mac --win"
   },
   "dependencies": {
     "@codemirror/lang-cpp": "^6.0.3",
