@@ -101,8 +101,8 @@
     "vite": "^6.3.5"
   },
   "build": {
-    "appId": "dev.pi.desktop-gui",
-    "productName": "Pi Desktop",
+    "appId": "org.zerwiz.sessrumnir",
+    "productName": "Sessrúmnir",
     "copyright": "Copyright 2026 Pi Desktop GUI Contributors. Licensed under the Apache License, Version 2.0.",
     "files": [
       "out/**/*",
@@ -163,5 +163,6 @@
       "uninstallerIcon": "resources/icons/icon.ico",
       "artifactName": "Pi-Desktop-${version}-${os}-${arch}-setup.${ext}"
     }
-  }
+  },
+  "productName": "Sessrúmnir"
 }
