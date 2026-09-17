@@ -81,7 +81,7 @@ function tokenLabel(name: string): string {
 // reads it via `useAppStore.getState()` at cleanup time rather than through
 // the hook, so the two call sites can't share a `useAppStore(...)` call.
 function resolveSettingsThemeId(state: ReturnType<typeof useAppStore.getState>): string {
-  return state.settingsDraft.theme ?? state.settings?.theme ?? 'dark'
+  return state.settingsDraft.theme ?? state.settings?.theme ?? 'fensalir'
 }
 
 export function ThemeEditor({
