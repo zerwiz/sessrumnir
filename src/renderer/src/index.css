@@ -376,3 +376,6 @@
    Highlight API) are injected at runtime from chat-search.tsx — Tailwind's
    Lightning CSS transformer drops the unrecognized ::highlight() pseudo-element
    at build time, so they can't live here. */
+
+/* The hearth — embers rising over the cloth. */
+.ember-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
