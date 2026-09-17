@@ -4,8 +4,8 @@
     "completedInAnotherWorkspace": "Finished in the background in another workspace",
     "failed": "Stopped with an error",
     "failedInAnotherWorkspace": "Stopped with an error in another workspace",
-    "working": "Pi is working",
-    "workingInAnotherWorkspace": "Pi is working in another workspace"
+    "working": "Brokk is working",
+    "workingInAnotherWorkspace": "Brokk is working in another workspace"
   },
   "app": {
     "dropFolder": {
@@ -15,12 +15,12 @@
     "errorBoundary": {
       "fallback": "Failed to render content"
     },
-    "quit": "Quit Pi Desktop",
+    "quit": "Quit Sessrúmnir",
     "resizeHandle": {
       "title": "Drag to resize"
     },
     "updateBanner": {
-      "available": "Pi Desktop <strong>v{{latestVersion}}</strong> is available — you're on v{{currentVersion}}.",
+      "available": "Sessrúmnir <strong>v{{latestVersion}}</strong> is available — you're on v{{currentVersion}}.",
       "dismissAriaLabel": "Dismiss update notification",
       "downloadButton": "Download"
     }
@@ -49,7 +49,7 @@
     },
     "council": {
       "planWithCouncil": "Plan with Council",
-      "startEngineFirst": "Start Pi/OMP before planning with Council"
+      "startEngineFirst": "Start the agent runtime before planning with Council"
     },
     "emptyState": {
       "chooseProject": "Choose a project — {{agent}} starts when you send.",
@@ -66,7 +66,7 @@
       "notificationFallback": "Notification",
       "selectFallbackTitle": "Select",
       "showWithShortcut": "Show ({{shortcut}})",
-      "waitingForAnswer": "Pi is waiting for an answer"
+      "waitingForAnswer": "Brokk is waiting for an answer"
     },
     "insertNote": {
       "ariaLabel": "Insert note",
@@ -163,7 +163,7 @@
       "description": "Open Settings"
     },
     "task": {
-      "description": "Launch a task in a new Pi session"
+      "description": "Launch a task in a new Brokk session"
     }
   },
   "commandSources": {
@@ -460,7 +460,7 @@
     "council": {
       "arbiterFailed": "Arbiter failed",
       "arbiterTimedOut": "Arbiter timed out",
-      "notEnoughMembers": "Council needs at least {{min}} agents. Install or enable Pi, Claude, or Codex, or turn the council off.",
+      "notEnoughMembers": "Council needs at least {{min}} agents. Install or enable Brokk, Claude, or Codex, or turn the council off.",
       "planningDisabled": "Council planning is disabled in Settings.",
       "timeoutNotNumber": "Council timeout must be a finite number",
       "timeoutRange": "Council timeout must be between {{min}} and {{max}} seconds",
@@ -472,7 +472,7 @@
       "refusedWrite": "Refusing to write outside the active workspace"
     },
     "fs": {
-      "blockedWrite": "Could not write \"{{path}}\" ({{code}}). On Windows this is usually Controlled Folder Access (Ransomware protection) blocking the change. Either allow Pi Desktop in Windows Security → Virus & threat protection → Ransomware protection → \"Allow an app through Controlled folder access\", or move this project out of Documents/Desktop to an unprotected folder (for example C:\\dev)."
+      "blockedWrite": "Could not write \"{{path}}\" ({{code}}). On Windows this is usually Controlled Folder Access (Ransomware protection) blocking the change. Either allow Sessrúmnir in Windows Security → Virus & threat protection → Ransomware protection → \"Allow an app through Controlled folder access\", or move this project out of Documents/Desktop to an unprotected folder (for example C:\\dev)."
     },
     "git": {
       "commandFailed": "{{command}} failed",
@@ -517,30 +517,30 @@
     "pi": {
       "commandFailedFallback": "Command failed",
       "commandTimedOut": "Command {{commandType}} timed out after {{timeoutMs}}ms",
-      "configuredPathMissing": "The Pi executable path set in {{settingsHint}} does not exist:\n  {{path}}\n\nPoint it at Pi's cli.js (or its install directory), or clear the field to auto-detect. Auto-detection also found nothing.\n\n{{installHint}}",
-      "crashedBeforeReady": "Pi crashed before becoming ready.",
-      "cwdMissing": "Pi working directory does not exist or is not a directory:\n  {{cwd}}",
-      "exitedBeforeReady": "Pi exited with code {{code}} before becoming ready.",
-      "failedToCreateManager": "Failed to create Pi manager",
-      "installHint": "Install Pi with:\n  {{npmCommand}}\nor install OMP with:\n  {{bunCommand}}",
-      "nodeNotFound": "Node binary not found at resolved path:\n  {{node}}\n\nPi's .js entry point requires Node. Install Node from https://nodejs.org or set the NODE env var to your Node binary path.",
-      "noManagerForWorkspace": "No Pi manager for workspace",
-      "notFound": "Pi binary not found. Searched the login shell PATH, npm's global prefix, node version managers (nvm, fnm, volta, asdf, mise, nodenv, n) and common install locations.\n\n{{installHint}}\n\nAlready installed? Set the full path to Pi's cli.js in {{settingsHint}}.",
-      "processExited": "Pi process exited",
-      "processKilled": "Pi process killed",
-      "processNotRunning": "Pi process is not running",
+      "configuredPathMissing": "The the agent runtime executable path set in {{settingsHint}} does not exist:\n  {{path}}\n\nPoint it at the agent runtime's cli.js (or its install directory), or clear the field to auto-detect. Auto-detection also found nothing.\n\n{{installHint}}",
+      "crashedBeforeReady": "the agent runtime crashed before becoming ready.",
+      "cwdMissing": "the agent runtime working directory does not exist or is not a directory:\n  {{cwd}}",
+      "exitedBeforeReady": "the agent runtime exited with code {{code}} before becoming ready.",
+      "failedToCreateManager": "Failed to create the agent runtime manager",
+      "installHint": "Install the agent runtime with:\n  {{npmCommand}}\nor install OMP with:\n  {{bunCommand}}",
+      "nodeNotFound": "Node binary not found at resolved path:\n  {{node}}\n\nits .js entry point requires Node. Install Node from https://nodejs.org or set the NODE env var to your Node binary path.",
+      "noManagerForWorkspace": "No the agent runtime manager for workspace",
+      "notFound": "the agent runtime binary not found. Searched the login shell PATH, npm's global prefix, node version managers (nvm, fnm, volta, asdf, mise, nodenv, n) and common install locations.\n\n{{installHint}}\n\nAlready installed? Set the full path to the agent runtime's cli.js in {{settingsHint}}.",
+      "processExited": "the agent runtime process exited",
+      "processKilled": "the agent runtime process killed",
+      "processNotRunning": "the agent runtime process is not running",
       "settingsHint": "Settings > Agent Configuration > Agent Installation",
       "spawnError": "Spawn error: {{detail}}",
-      "startupTimeoutBusy": "Pi started but did not become ready within {{seconds}}s.\n\nPi was alive and producing output, but never answered the readiness check. Extension startup hooks run before Pi reads commands, and a hook that calls a local model server can wait this long while the model loads or prefills a large prompt. Check the engine and model-server logs, then retry.",
-      "startupTimeoutBusyWithStderr": "{{message}}\n\nPi stderr captured during startup:\n{{detail}}",
-      "startupTimeoutSilentNoOutput": "Pi produced no output within {{seconds}}s.\n\nNo output captured. Check the app log for the exact spawn command, and try running `pi --mode rpc` directly in a terminal.",
-      "startupTimeoutSilentWithStderr": "Pi produced no output within {{seconds}}s.\n\nPi stderr captured during startup:\n{{detail}}"
+      "startupTimeoutBusy": "the agent runtime started but did not become ready within {{seconds}}s.\n\nthe agent runtime was alive and producing output, but never answered the readiness check. Extension startup hooks run before the agent runtime reads commands, and a hook that calls a local model server can wait this long while the model loads or prefills a large prompt. Check the engine and model-server logs, then retry.",
+      "startupTimeoutBusyWithStderr": "{{message}}\n\nthe agent runtime stderr captured during startup:\n{{detail}}",
+      "startupTimeoutSilentNoOutput": "the agent runtime produced no output within {{seconds}}s.\n\nNo output captured. Check the app log for the exact spawn command, and try running `pi --mode rpc` directly in a terminal.",
+      "startupTimeoutSilentWithStderr": "the agent runtime produced no output within {{seconds}}s.\n\nthe agent runtime stderr captured during startup:\n{{detail}}"
     },
     "session": {
       "alreadyAttached": "Session file is already attached to a live runtime",
       "attachedToDifferentWorkspace": "Session is already attached to a different workspace runtime",
       "ompNoClone": "The OMP engine does not support cloning a session",
-      "pathMustExist": "{{field}} must point to an existing Pi session file",
+      "pathMustExist": "{{field}} must point to an existing the agent runtime session file",
       "projectMismatch": "Session project does not match the active workspace",
       "runtimeNotFound": "Session runtime not found: {{runtimeId}}"
     },
@@ -626,7 +626,7 @@
         "pickFolderFirst": "Pick a folder first"
       },
       "newTask": {
-        "description": "Start work in a fresh Pi session",
+        "description": "Start work in a fresh Brokk session",
         "title": "New Task"
       },
       "openFolder": {
@@ -689,7 +689,7 @@
     "needsAttention_one": "{{count}} needs attention",
     "needsAttention_other": "{{count}} needs attention",
     "newTask": "New task",
-    "noLiveRuntimes": "No live session runtimes yet. Start a task to put Pi to work in the background.",
+    "noLiveRuntimes": "No live session runtimes yet. Start a task to put Brokk to work in the background.",
     "noWorkflowRuns": "No workflow runs yet.",
     "open": "Open",
     "openAllWorkflows": "Open all workflows",
@@ -739,7 +739,7 @@
       "searchPlaceholder": "Search models…",
       "selectModel": "Select model",
       "selectModelWithShortcut": "Select model (Ctrl+P to cycle when {{agent}} is running)",
-      "startToListModels": "Start Pi to list and change models."
+      "startToListModels": "Start Brokk to list and change models."
     }
   },
   "notes": {
@@ -784,9 +784,9 @@
     "viewNoteTitle": "View note"
   },
   "notifications": {
-    "completed": "Pi finished working.",
-    "failed": "Pi stopped with an error.",
-    "needs-approval": "Pi is waiting for your approval.",
+    "completed": "Brokk finished working.",
+    "failed": "Brokk stopped with an error.",
+    "needs-approval": "Brokk is waiting for your approval.",
     "withSession": "{{body}} Click to open the finished session."
   },
   "packages": {
@@ -839,11 +839,11 @@
   },
   "permissionMode": {
     "ask-commands": {
-      "description": "Pi will ask before running shell commands.",
+      "description": "Brokk will ask before running shell commands.",
       "label": "Ask before commands"
     },
     "ask-edits": {
-      "description": "Pi will ask before file edits and shell commands that can change files.",
+      "description": "Brokk will ask before file edits and shell commands that can change files.",
       "label": "Ask before edits"
     },
     "plan-readonly": {
@@ -851,7 +851,7 @@
       "label": "Plan / Read-only"
     },
     "trusted": {
-      "description": "All Pi tools are enabled for workflows you trust.",
+      "description": "All Brokk tools are enabled for workflows you trust.",
       "label": "Trusted"
     }
   },
@@ -983,17 +983,17 @@
       "saved": "Saved!"
     },
     "agentInstallation": {
-      "autoDetectOption": "Auto-detect (Pi first, then OMP)",
+      "autoDetectOption": "Auto-detect (pi first, then OMP)",
       "chooseExecutableTitle": "Choose executable or install directory",
       "customPathOption": "Custom path…",
-      "description": "Auto-detect Pi and OMP, choose an installed engine, or use a custom executable/path.",
+      "description": "Auto-detect pi and OMP, choose an installed engine, or use a custom executable/path.",
       "detectedCount_one": "{{count}} installed engine detected",
       "detectedCount_other": "{{count}} installed engines detected",
       "engineAriaLabel": "Agent engine",
       "engineAutoOption": "Auto",
       "installedOption": "{{engine}} — {{path}}",
       "label": "Agent Installation",
-      "noneDetected": "No Pi or OMP installation detected yet",
+      "noneDetected": "No pi or OMP installation detected yet",
       "ompNotFoundOption": "OMP (not found)",
       "pathPlaceholder": "Path to executable, cli.js, or install directory",
       "rescanTitle": "Rescan installed agents",
@@ -1018,7 +1018,7 @@
       "confirmButton": "Enable",
       "confirmMessage": "Each run spawns Claude and Codex in addition to {{engine}}. This can significantly increase token usage and credit/API costs. Only enable this if you are comfortable with the extra spend.",
       "confirmTitle": "Enable council planning?",
-      "description": "Spawns Claude/Codex alongside Pi to plan tasks. Increases token usage and credit/API costs.",
+      "description": "Spawns Claude/Codex alongside Brokk to plan tasks. Increases token usage and credit/API costs.",
       "label": "Enable council planning"
     },
     "councilMembers": {
@@ -1041,7 +1041,7 @@
       "label": "Dark Theme"
     },
     "desktopNotifications": {
-      "description": "Notify when Pi finishes, fails, or waits for approval in a workspace you are not looking at",
+      "description": "Notify when Brokk finishes, fails, or waits for approval in a workspace you are not looking at",
       "label": "Desktop Notifications"
     },
     "language": {
@@ -1055,7 +1055,7 @@
       "label": "Light Theme"
     },
     "minimizeToTrayOnClose": {
-      "description": "Keep Pi Desktop running in the system tray when you close the window instead of quitting (Windows and Linux)",
+      "description": "Keep Sessrúmnir running in the system tray when you close the window instead of quitting (Windows and Linux)",
       "label": "Minimize to Tray on Close"
     },
     "openToHomeOnLaunch": {
@@ -1063,7 +1063,7 @@
       "label": "Open to Home Screen on Launch"
     },
     "permissionMode": {
-      "description": "Default safety mode for Pi actions",
+      "description": "Default safety mode for Brokk actions",
       "label": "Permission Mode"
     },
     "permissionRules": {
@@ -1083,7 +1083,7 @@
       "label": "Resume Last Session"
     },
     "runOnStartup": {
-      "description": "Automatically start Pi Desktop when you log in to your computer (takes effect in installed builds)",
+      "description": "Automatically start Sessrúmnir when you log in to your computer (takes effect in installed builds)",
       "label": "Run on Startup"
     },
     "sections": {
@@ -1143,7 +1143,7 @@
       "chat": "Chat",
       "missionControl": "Mission Control",
       "missionControlTitle": "All background sessions and workflows",
-      "newTaskTitle": "Start a task in a new Pi session",
+      "newTaskTitle": "Start a task in a new Brokk session",
       "sessions": "Sessions",
       "sessionsTitle": "Sessions in this project",
       "timeline": "Timeline",
@@ -1165,8 +1165,8 @@
       "ariaLabel": "Open project folder",
       "titleWithShortcut": "Open project folder (Ctrl/Cmd+O)"
     },
-    "promptsWaitingInOtherWorkspaces_one": "{{count}} Pi prompt waiting in other workspaces",
-    "promptsWaitingInOtherWorkspaces_other": "{{count}} Pi prompts waiting in other workspaces",
+    "promptsWaitingInOtherWorkspaces_one": "{{count}} Brokk prompt waiting in other workspaces",
+    "promptsWaitingInOtherWorkspaces_other": "{{count}} Brokk prompts waiting in other workspaces",
     "recentSessions": {
       "emptyInProject": "No sessions in this project yet.",
       "emptyNoProject": "Open a project to see its sessions.",
@@ -1338,29 +1338,29 @@
   "store": {
     "confirm": {
       "changeAnywayLabel": "Change anyway",
-      "changeFolderMessage": "Pi has not finished responding in this session. Changing the project folder restarts Pi, which stops it: whatever Pi already wrote to the session is kept, but the rest of the response — including any tool calls still running — is discarded.",
+      "changeFolderMessage": "Brokk has not finished responding in this session. Changing the project folder restarts Brokk, which stops it: whatever Brokk already wrote to the session is kept, but the rest of the response — including any tool calls still running — is discarded.",
       "cloneAnywayLabel": "Clone anyway",
-      "cloneMessage": "Pi has not finished responding in this session. Cloning this branch stops it: whatever Pi already wrote to the session is kept, but the rest of the response — including any tool calls still running — is discarded.",
+      "cloneMessage": "Brokk has not finished responding in this session. Cloning this branch stops it: whatever Brokk already wrote to the session is kept, but the rest of the response — including any tool calls still running — is discarded.",
       "closeManagedWorktreeMessage": "Close \"{{name}}\"? Clean worktrees are removed; tabs with uncommitted changes are preserved on disk.",
-      "closeSessionTabMessage": "Pi is still working in this session. Closing the tab stops its runtime; saved messages remain available from Sessions.",
+      "closeSessionTabMessage": "Brokk is still working in this session. Closing the tab stops its runtime; saved messages remain available from Sessions.",
       "closeSessionTabTitle": "Close session tab?",
       "closeTabLabel": "Close tab",
       "closeUnmanagedWorktreeMessage": "Close \"{{name}}\"? This existing worktree and its files remain on disk.",
       "forkAnywayLabel": "Fork anyway",
-      "forkMessage": "Pi has not finished responding in this session. Forking this session stops it: whatever Pi already wrote to the session is kept, but the rest of the response — including any tool calls still running — is discarded.",
+      "forkMessage": "Brokk has not finished responding in this session. Forking this session stops it: whatever Brokk already wrote to the session is kept, but the rest of the response — including any tool calls still running — is discarded.",
       "keepUntrustedLabel": "Keep untrusted",
       "keepWorkingLabel": "Keep working",
-      "newMessage": "Pi has not finished responding in this session. Starting a new session stops it: whatever Pi already wrote to the session is kept, but the rest of the response — including any tool calls still running — is discarded.",
+      "newMessage": "Brokk has not finished responding in this session. Starting a new session stops it: whatever Brokk already wrote to the session is kept, but the rest of the response — including any tool calls still running — is discarded.",
       "okLabel": "OK",
-      "removeWorkspaceMessage": "Remove \"{{name}}\" from the sidebar? Its Pi process stops; files on disk are not touched.",
+      "removeWorkspaceMessage": "Remove \"{{name}}\" from the sidebar? Its Brokk process stops; files on disk are not touched.",
       "removeWorkspaceTitle": "Remove workspace",
       "startAnywayLabel": "Start anyway",
-      "stillWorkingTitle": "Pi is still working",
+      "stillWorkingTitle": "Brokk is still working",
       "switchAnywayLabel": "Switch anyway",
-      "switchMessage": "Pi has not finished responding in this session. Opening another session stops it: whatever Pi already wrote to the session is kept, but the rest of the response — including any tool calls still running — is discarded.",
+      "switchMessage": "Brokk has not finished responding in this session. Opening another session stops it: whatever Brokk already wrote to the session is kept, but the rest of the response — including any tool calls still running — is discarded.",
       "trustWorkspaceMessage": "This workspace defines permission rules (.pi-desktop/permission-rules.json) with allow rules that would let Pi skip confirmation prompts. They are ignored until you trust this workspace; its deny rules always apply. Only trust workspaces from a source you trust.",
       "trustWorkspaceTitle": "Trust this workspace?",
-      "workspaceMessage": "Pi has not finished responding in this session. It keeps working after you switch: the response is saved to the session and restored when you come back, and any prompt Pi raises while you are away is held and shown on your return.",
+      "workspaceMessage": "Brokk has not finished responding in this session. It keeps working after you switch: the response is saved to the session and restored when you come back, and any prompt Brokk raises while you are away is held and shown on your return.",
       "workspaceRulesNoticeMessage": "This workspace defines its own permission rules (.pi-desktop/permission-rules.json). Its deny rules restrict Pi while you work here; your global rules apply otherwise.",
       "workspaceRulesNoticeTitle": "Workspace permission rules"
     },
@@ -1382,7 +1382,7 @@
       "error": "Error: {{detail}}",
       "followUpError": "Follow-up error: {{detail}}",
       "imageFallbackName": "Image {{index}}",
-      "installedPackage": "Installed {{spec}}. Restart Pi to load it.",
+      "installedPackage": "Installed {{spec}}. Restart the seat to load it.",
       "installFailed": "Install failed",
       "modelError": "Model error: {{detail}}",
       "newIsolatedTabError": "New isolated tab error: {{detail}}",
@@ -1405,13 +1405,13 @@
       "truncatedHistory_other": "Showing the latest {{count}} of {{total}} messages for performance. Older turns are still on disk in the session file.",
       "unarchiveError": "Unarchive error: {{detail}}",
       "unknownError": "Unknown error",
-      "updatedAllPackages": "Updated packages. Restart Pi to load them.",
-      "updatedPackage": "Updated {{spec}}. Restart Pi to load it.",
+      "updatedAllPackages": "Updated packages. Restart the seat to load them.",
+      "updatedPackage": "Updated {{spec}}. Restart the seat to load it.",
       "updatePackageFailed": "Update failed",
       "writeFailed": "Write failed"
     },
-    "promptsWaiting_one": "{{count}} Pi prompt waiting",
-    "promptsWaiting_other": "{{count}} Pi prompts waiting"
+    "promptsWaiting_one": "{{count}} Brokk prompt waiting",
+    "promptsWaiting_other": "{{count}} Brokk prompts waiting"
   },
   "taskLauncher": {
     "closeAriaLabel": "Close task launcher",
@@ -1423,7 +1423,7 @@
     "openProjectFirst": "Open a project first",
     "starting": "Starting…",
     "startTask": "Start task",
-    "subtitle": "Start a fresh Pi session and send the task immediately.",
+    "subtitle": "Start a fresh Brokk session and send the task immediately.",
     "task": "Task",
     "taskPlaceholder": "Fix the failing tests, explain the root cause, and prepare the changes for review…"
   },
@@ -1595,10 +1595,10 @@
     }
   },
   "tray": {
-    "show": "Show Pi Desktop",
+    "show": "Show Sessrúmnir",
     "stillRunningBody": "The window was hidden to the system tray. Click the tray icon to reopen it, or use Quit to exit.",
-    "stillRunningTitle": "Pi Desktop is still running",
-    "unavailableBody": "This desktop has no system tray, so Pi Desktop will close normally instead of minimizing to the tray.",
+    "stillRunningTitle": "Sessrúmnir is still running",
+    "unavailableBody": "This desktop has no system tray, so Sessrúmnir will close normally instead of minimizing to the tray.",
     "unavailableTitle": "System tray unavailable"
   },
   "workflows": {
