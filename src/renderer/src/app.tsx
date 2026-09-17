@@ -26,6 +26,8 @@ import { useAppStore } from './store'
 import { useEffect } from 'react'
 import { ArrowUpCircle, FolderOpen, PanelLeft, X } from 'lucide-react'
 
+import EmberBackground from './components/EmberBackground'
+
 export function App(): React.JSX.Element {
   const { t } = useTranslation()
   usePiEvents()
@@ -95,6 +97,7 @@ export function App(): React.JSX.Element {
 
   return (
     <div className="relative flex h-screen flex-col bg-app text-primary">
+      <EmberBackground />
       {isDraggingFolder && (
         <div
           className="pointer-events-none absolute inset-0 z-[100] flex items-center justify-center bg-app/80 backdrop-blur-sm"

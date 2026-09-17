@@ -7,5 +7,5 @@
 // those (separate process/bundle), so this module is the single shared
 // source of truth for just the id strings.
 export const BUILTIN_THEME_IDS = [
-  'dark', 'light', 'nord', 'gruvbox', 'breeze-dark', 'breeze-light', 'breeze-claudius',
+  'dark', 'light', 'nord', 'gruvbox', 'breeze-dark', 'breeze-light', 'breeze-claudius', 'sessrumnir', 'fensalir',
 ] as const
