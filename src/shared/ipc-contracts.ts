@@ -1135,7 +1135,7 @@ export interface AppSettings {
   // instead of booting straight into Chat. When false, boot into Chat (empty
   // chat is the Codex-style center prompt with project picker).
   openToHomeOnLaunch: boolean
-  // Launch Pi Desktop automatically when the user logs in to their computer.
+  // Launch Sessrúmnir automatically when the user logs in to their computer.
   // Applied at the OS level: login items on macOS/Windows, a freedesktop
   // autostart entry on Linux. Only effective in packaged builds.
   runOnStartup: boolean

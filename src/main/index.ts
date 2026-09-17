@@ -24,7 +24,7 @@ const WORKSPACE_ENV_VAR = 'PI_DESKTOP_WORKSPACE'
 
 // Electron's development executable otherwise registers as Electron on Windows,
 // which makes the taskbar and notification identity use Electron branding.
-app.setName('Pi Desktop')
+app.setName('Sessrúmnir')
 if (process.platform === 'win32') app.setAppUserModelId('dev.pi.desktop-gui')
 
 // Suppress EPIPE errors from closed subprocess pipes
@@ -174,7 +174,7 @@ function createMainWindow(): BrowserWindow {
     height: WINDOW_HEIGHT,
     minWidth: MIN_WINDOW_WIDTH,
     minHeight: MIN_WINDOW_HEIGHT,
-    title: 'Pi Desktop',
+    title: 'Sessrúmnir',
     backgroundColor: '#0a0a0a',
     icon: appIcon,
     show: false,
@@ -544,7 +544,7 @@ async function applyWorkspaceFromEnv(manager: WorkspaceManager): Promise<void> {
 
   const path = resolvePath(raw)
   if (!existsSync(path)) {
-    console.warn(`[Pi Desktop] ${WORKSPACE_ENV_VAR}=${raw} does not exist; ignoring`)
+    console.warn(`[Sessrúmnir] ${WORKSPACE_ENV_VAR}=${raw} does not exist; ignoring`)
     return
   }
 

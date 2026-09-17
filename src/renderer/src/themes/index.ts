@@ -8,8 +8,12 @@ import gruvbox from './gruvbox.json'
 import breezeDark from './breeze-dark.json'
 import breezeLight from './breeze-light.json'
 import breezeClaudius from './breeze-claudius.json'
+import sessrumnir from './sessrumnir.json'
+import fensalir from './fensalir.json'
 
 export const BUILTIN_THEMES: ReadonlyArray<{ id: string; file: ThemeFile }> = [
+  { id: 'sessrumnir', file: sessrumnir as ThemeFile },
+  { id: 'fensalir', file: fensalir as ThemeFile },
   { id: 'dark', file: dark as ThemeFile },
   { id: 'light', file: light as ThemeFile },
   { id: 'nord', file: nord as ThemeFile },
@@ -42,6 +46,8 @@ const BUILTIN_THEME_NAME_KEYS = {
   'breeze-dark': 'themes.builtin.breeze-dark',
   'breeze-light': 'themes.builtin.breeze-light',
   'breeze-claudius': 'themes.builtin.breeze-claudius',
+  sessrumnir: 'themes.builtin.sessrumnir',
+  fensalir: 'themes.builtin.fensalir',
 } as const satisfies Record<BuiltinThemeId, string>
 
 /** Built-in themes show a translated name; user and gallery themes keep their own. */
