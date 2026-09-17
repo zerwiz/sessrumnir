@@ -1,5 +1,5 @@
 {
-  "name": "pi-desktop",
+  "name": "@zerwiz/sessrumnir",
   "version": "0.1.9",
   "description": "Desktop GUI frontend for the Pi coding agent",
   "main": "out/main/index.js",
