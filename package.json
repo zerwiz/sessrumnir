@@ -1,10 +1,10 @@
 {
   "name": "@zerwiz/sessrumnir",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Desktop GUI frontend for the Pi coding agent",
   "main": "out/main/index.js",
   "desktopName": "pi-desktop.desktop",
-  "author": "Pi Desktop GUI Contributors",
+  "author": "Zerwiz",
   "license": "Apache-2.0",
   "homepage": "https://github.com/FaqFirebase/pi-desktop",
   "repository": {
@@ -20,7 +20,7 @@
     "ide"
   ],
   "bin": {
-    "pi-desktop": "./bin/pi-desktop.js"
+    "sessrumnir": "./bin/sessrumnir.js"
   },
   "scripts": {
     "dev": "electron-vite build && electron-vite preview -- --no-sandbox",
@@ -103,7 +103,7 @@
   "build": {
     "appId": "org.zerwiz.sessrumnir",
     "productName": "Sessrúmnir",
-    "copyright": "Copyright 2026 Pi Desktop GUI Contributors. Licensed under the Apache License, Version 2.0.",
+    "copyright": "Copyright 2026 Zerwiz. Licensed under the Apache License, Version 2.0.",
     "files": [
       "out/**/*",
       "bin/**/*"
@@ -130,7 +130,7 @@
       "icon": "resources/icons",
       "synopsis": "Desktop GUI for the Pi coding agent",
       "description": "An Electron desktop application that provides a GUI frontend for the Pi coding agent.",
-      "maintainer": "Pi Desktop GUI Contributors",
+      "maintainer": "Sessrúmnir GUI Contributors",
       "artifactName": "Pi-Desktop-${version}-${os}-${arch}.${ext}"
     },
     "mac": {
@@ -158,7 +158,7 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "Pi Desktop",
+      "shortcutName": "Sessrúmnir",
       "installerIcon": "resources/icons/icon.ico",
       "uninstallerIcon": "resources/icons/icon.ico",
       "artifactName": "Pi-Desktop-${version}-${os}-${arch}-setup.${ext}"
