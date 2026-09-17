@@ -164,5 +164,6 @@
       "artifactName": "Pi-Desktop-${version}-${os}-${arch}-setup.${ext}"
     }
   },
-  "productName": "Sessr\u00famnir"
+  "productName": "Sessr\u00famnir",
+  "private": false
 }
