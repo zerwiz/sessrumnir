@@ -232,6 +232,8 @@ export function useChatScroll(active: boolean): {
   const sessionId = useAppStore((state) => state.sessionState?.sessionId ?? null)
   const messages = useAppStore((state) => state.messages)
   const streamingContent = useAppStore((state) => state.streamingContent)
+  const streamingThinking = useAppStore((state) => state.streamingThinking)
+  const streamingToolCalls = useAppStore((state) => state.streamingToolCalls)
   const scrollBottomNonce = useAppStore((state) => state.chatScrollBottomNonce)
 
   const positions = useRef<Map<string, ScrollAnchor>>(new Map())
@@ -248,6 +250,8 @@ export function useChatScroll(active: boolean): {
   // re-renders (e.g. re-showing the panel), so returning to chat doesn't scroll.
   const prevMsgCount = useRef(0)
   const prevStreamLen = useRef(0)
+  const prevThinkingLen = useRef(0)
+  const prevToolCount = useRef(0)
 
   // Whether the viewport is at (or within a hair of) the bottom. `atBottom` (state)
   // drives the jump-to-bottom button; `atBottomRef` is read synchronously in the
@@ -291,12 +295,23 @@ export function useChatScroll(active: boolean): {
   useLayoutEffect(() => {
     const el = ref.current
 
-    // Did content actually grow (new message or streamed text)? Tracked even
-    // while hidden so re-showing the panel isn't mistaken for new content.
+    // Did content actually grow (new message or streamed text/thinking/tools)?
+    // Tracked even while hidden so re-showing the panel isn't mistaken for new
+    // content. Thinking is streamed text too — a reasoning-heavy turn with no
+    // visible content yet would otherwise never move the feed, leaving the
+    // thinking block to grow out of sight below the floating composer.
     const messagesGrew = messages.length > prevMsgCount.current
-    const grew = messagesGrew || streamingContent.length > prevStreamLen.current
+    const thinkingGrew = streamingThinking.length > prevThinkingLen.current
+    const toolsGrew = streamingToolCalls.size > prevToolCount.current
+    const grew =
+      messagesGrew ||
+      streamingContent.length > prevStreamLen.current ||
+      thinkingGrew ||
+      toolsGrew
     prevMsgCount.current = messages.length
     prevStreamLen.current = streamingContent.length
+    prevThinkingLen.current = streamingThinking.length
+    prevToolCount.current = streamingToolCalls.size
 
     // Defer scrolling while hidden: a display:none element has no layout, so
     // scrollHeight is 0 and any positioning would be wrong.
@@ -372,7 +387,7 @@ export function useChatScroll(active: boolean): {
     }
 
     syncAtBottom()
-  }, [active, sessionId, messages, streamingContent, scrollBottomNonce, autoScroll, syncAtBottom])
+  }, [active, sessionId, messages, streamingContent, streamingThinking, streamingToolCalls, scrollBottomNonce, autoScroll, syncAtBottom])
 
   return { scrollRef: ref, onScroll, atBottom, scrollToBottom }
 }
@@ -391,7 +406,8 @@ export function isAbortShortcut(event: { key: string; defaultPrevented: boolean 
 export function useChatKeyboard(
   onSend: (message: string) => void,
   onAbort: () => void,
-  inputRef: React.RefObject<HTMLTextAreaElement | null>
+  inputRef: React.RefObject<HTMLTextAreaElement | null>,
+  onInterrupt?: (message: string) => void
 ): void {
   const isStreaming = useAppStore((state) => state.isStreaming)
 
@@ -403,20 +419,37 @@ export function useChatKeyboard(
         return
       }
 
-      // Enter: send message (without Shift)
-      if (e.key === 'Enter' && !e.shiftKey && document.activeElement === inputRef.current) {
-        e.preventDefault()
-        const value = inputRef.current?.value.trim()
-        if (value) {
-          onSend(value)
-          if (inputRef.current) inputRef.current.value = ''
+      // Enter sends — and while the agent is working that send is QUEUED as a
+      // follow-up (it enters only when the run finishes its pending work).
+      // Ctrl/Cmd+Enter or Alt+Enter is the deliberate interruption: it steers
+      // into the current run instead.
+      if (e.key === 'Enter' && document.activeElement === inputRef.current) {
+        const wantsInterrupt = (e.ctrlKey || e.metaKey || e.altKey) && !e.shiftKey
+
+        if (wantsInterrupt && onInterrupt) {
+          e.preventDefault()
+          const steered = inputRef.current?.value.trim()
+          if (steered) {
+            onInterrupt(steered)
+            if (inputRef.current) inputRef.current.value = ''
+          }
+          return
+        }
+
+        if (!e.shiftKey) {
+          e.preventDefault()
+          const value = inputRef.current?.value.trim()
+          if (value) {
+            onSend(value)
+            if (inputRef.current) inputRef.current.value = ''
+          }
         }
       }
     }
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isStreaming, onSend, onAbort, inputRef])
+  }, [isStreaming, onSend, onAbort, inputRef, onInterrupt])
 }
 
 /** A Pi built-in that maps to a GUI action rather than being inserted as text. */
@@ -487,9 +520,6 @@ export function useInitialize(): void {
     initialized.current = true
 
     const initialize = async (): Promise<void> => {
-      // Registered before the first theme apply so the native window
-      // background matches from the start.
-      subscribeAppliedTheme(syncWindowBackground)
       await loadSettings()
       const openToHome = useAppStore.getState().settings?.openToHomeOnLaunch ?? DEFAULT_SETTINGS.openToHomeOnLaunch
 
@@ -565,15 +595,6 @@ export function useNotePickerShortcut(): void {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
-}
-
-/**
- * Copies the page background to the native window, which paints areas the
- * page has not drawn yet (live-resize edges on Windows and macOS). The body
- * uses the theme's app color, and its computed value is always rgb()/rgba().
- */
-function syncWindowBackground(): void {
-  void window.piDesktop.themes.setWindowBackground(getComputedStyle(document.body).backgroundColor)
 }
 
 /**

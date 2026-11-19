@@ -1,6 +1,22 @@
-# Pi Desktop
+# Sessrúmnir
 
-An Electron desktop application that acts as a GUI frontend for the Pi coding agent. Currently in alpha; see the Version section below.
+An Electron desktop application that acts as a GUI frontend for the Pi and OMP coding agents. Currently in alpha; see the Version section below.
+
+> **Ymir adoption:** this tree is a vendored fork of the Apache-2.0
+> **pi-desktop** project (`github.com/FaqFirebase/pi-desktop`, commit `4a5601b`,
+> v0.1.7-alpha) rebranded **Sessrúmnir** — the seat-hall where the Allfather
+> converses with the machine. Keep `LICENSE` and the upstream attribution; add
+> changes to `NOTICE` when they land. The external engine keeps its product name
+> `pi-desktop`; the GUI the user sees is `Sessrúmnir`, wearing **the carved cloth
+> of the halls** — the stone/bone/bronze/blood palette and the
+> Cormorant/Newsreader/IBM Plex Mono type of the landing page
+> (`CodeP/ymir-homepage/src/lore.html` `:root`), cut into `src/renderer/src/index.css`
+> `@theme` and shipped as the built-in themes `sessrumnir` (the seat's default)
+> and `fensalir` (Fensalir, the weaving halls). The cloth is the **default, not a
+> cage**: every other built-in theme, any user theme, and `high-contrast` stay
+> selectable and win when chosen. Components read the semantic `--color-*` tokens
+> (or `text-inverse` on an accent plate) — never a literal colour. Dependencies
+> are never committed — `npm install` on first launch.
 
 ## Version
 
@@ -38,7 +54,7 @@ Project is currently in **Alpha**. APIs, IPC contracts, on-disk config formats, 
 - One i18next default instance per process (`src/shared/i18n`), starting in English; language files live in `resources/locales/<code>/translation.json`
 - Components call `useTranslation()` from `react-i18next`; other code imports `t` from `src/shared/i18n`. Text is built when called, never stored translated at module load
 - `tEnglish` (also from `src/shared/i18n`) is used instead of `t` for logs, `appLog.*`, and the diagnostics report, which stay English regardless of the interface language
-- Product names ("Pi Desktop", "Pi", "OMP") are never translation keys — they come from `agentEngineLabel()`, `councilAgentLabel()`, or a named constant, never from a language file
+- Product names ("Sessrúmnir", "Pi", "OMP") are never translation keys — they come from `agentEngineLabel()`, `councilAgentLabel()`, or a named constant, never from a language file
 - `npm run lint` runs `i18next-cli lint` and `i18next-cli extract --ci --dry-run`, so hard-coded text and stale keys fail CI
 - Code never decides behavior from a translated display string; it reads underlying values (failure codes, `kind`/`ToolKind` enums, error types) instead
 - `t` from `useTranslation()` changes identity on every language switch. List it in the deps of a `useMemo`/`useCallback` that builds text, but never in the deps of a `useEffect` that does I/O or resets state (a re-run once discarded unsaved editor edits): keep the outcome as data and translate it at render (`utils/preview-load-error.ts`)
@@ -62,7 +78,7 @@ src/
 │   ├── folder-drop.ts            # Pure helpers for drag-drop folder → workspace
 │   ├── untrusted-data.ts         # Wrap file/agent text as a labeled untrusted-data block
 │   ├── agent-engine-label.ts     # Display names for the Pi/OMP engines (every surface reads this one map)
-│   ├── product-name.ts           # "Pi Desktop" display name (a named constant, never a translation key)
+│   ├── product-name.ts           # "Sessrúmnir" display name (a named constant, never a translation key)
 │   ├── i18n/                     # i18next instance, t/tEnglish, bundled languages, OS-language resolver, pseudo-language, locale checks
 │   ├── pi-command.ts             # Slash-command filtering
 │   ├── fork-point.ts             # Fork/branch message helpers
@@ -284,6 +300,30 @@ src/
 - Thinking level selector (off/minimal/low/medium/high/xhigh, plus max when the engine offers it)
 - Token usage and cost tracking in status bar
 
+### To the Hall
+
+- The status bar carries one **To the Hall** button (carved: brass rule, bone
+  rune, bronze on hover) that opens the Ymir landing page in the browser.
+- Where it lands is resolved in the **main** process (`SYSTEM_HALL_URL`): the
+  local site (`http://127.0.0.1:4322`, overridable with `YMIR_HALL_URL`) when it
+  answers, otherwise the hostname the operator declares (`YMIR_HALL_URL`). The probe lives there
+  because the renderer's CSP (`connect-src 'self'`) forbids a cross-origin fetch.
+- Opening is the same `system:open-external` door the update banner uses —
+  http(s) only.
+
+### Text selection
+
+- `::selection` is a **theme token** (`--color-selection-bg` / `--color-selection-fg`,
+  pi-theme/v1): the cloth themes pin the landing's amber `#57411a` on pale bone
+  `#f0e6cd`; any other theme derives its own tint from its accent, so a user theme
+  still wins.
+- The global rule lives in `index.css` `@layer base`; the CodeMirror editor needs
+  a second, **unlayered** rule (`.cm-editor .cm-selectionLayer .cm-selectionBackground`)
+  because CodeMirror's own base theme paints its selection layer with unlayered
+  rules, which beat any layered rule whatever the specificity.
+- The terminal's selection rides the same cloth through `--cm-selection-bg`
+  (`components/terminal.tsx` reads it into the xterm theme).
+
 ### Command Palette / Quick Switcher
 
 - Open with `Ctrl/Cmd+K` (works with Pi stopped), or by typing `/` at the start of the composer
@@ -321,6 +361,7 @@ src/
 
 - CodeMirror 6-backed editor for opening and editing project files
 - Theme-aware syntax highlighting via a custom `HighlightStyle` (in `code-editor-highlight.ts`) whose token colors are CSS variables. The theme resolver (`shared/theme/resolve.ts`) emits each theme's `--cm-*` palette from the theme file's `syntax` block (or `syntax-defaults.ts`), so the editor restyles when the user switches themes — no editor logic needed.
+- The carved cloth's syntax palette (bronze keyword, steel string, bone-faint comment) is pinned in `themes/fensalir.json`; the same `--cm-*` variables drive the chat's markdown code blocks, so editor and chat are one cloth.
 - 15+ languages: JS/TS/JSX/TSX, JSON, Markdown, HTML, CSS/SCSS/Less, Python, Rust, Go, Java, PHP, XML/SVG, SQL, YAML, C/C++/C#
 - Save/Revert/Close controls with dirty-state tracking and 2s "saved" feedback
 - Debounced onChange (150ms) and race-safe file switching
@@ -435,7 +476,7 @@ data-dir migration the GUI's files live under the OS app-data dir
 
 ## Distribution
 
-Pi Desktop is shipped as pre-built binaries — not via npm. Agents must not attempt `npm publish`.
+Sessrúmnir is shipped as pre-built binaries — not via npm. Agents must not attempt `npm publish`.
 
 | Platform | Format | Notes |
 |----------|--------|-------|
@@ -497,3 +538,7 @@ Before delivering a change:
 6. Ensure consistency (naming, API shape, structure)
 7. Run `npm run typecheck`, `npm run lint`, and `npm run build`
 8. Update `MEMORY.md` when the work introduces decisions or known issues worth recording (it is a long-lived log, not a per-change requirement)
+
+## CHANGE LOG
+
+- **2026-11-12** — this document gained a CHANGE LOG section so it carries its history (RULES/06). Its earlier history is its git log; entries are appended below, never rewritten.

@@ -59,6 +59,12 @@ export function registerSystemHandlers(ctx: IpcContext): void {
 
   ipcMain.handle(IPC_CHANNELS.SYSTEM_GET_PATH, async (_event, name: unknown) => {
     if (!isString(name)) throw new Error('name must be a string')
+    if (name === 'ymirRoot') {
+      // The Ymir repo root: the launcher sets it; else derive it (dev layout is
+      // <root>/apps/sessrumnir, so three levels up).
+      const fromEnv = process.env.YMIR_ROOT
+      return fromEnv && fromEnv.length > 0 ? fromEnv : resolve(app.getAppPath(), '..', '..', '..')
+    }
     const validPaths = ['home', 'appData', 'userData', 'temp', 'desktop', 'documents'] as const
     if (validPaths.includes(name as (typeof validPaths)[number])) {
       return app.getPath(name as 'home' | 'appData' | 'userData' | 'temp' | 'desktop' | 'documents')
@@ -85,6 +91,34 @@ export function registerSystemHandlers(ctx: IpcContext): void {
       throw new Error(t('errors.system.externalUrlHttpOnly'))
     }
     await shell.openExternal(url)
+  })
+
+  /**
+   * Where the Hall — the public landing page — lives. On this machine the site
+   * is usually served locally (:4322), so prefer that when it answers and fall
+   * back to the public hostname otherwise. The probe lives here, not in the
+   * renderer: the renderer's CSP allows no cross-origin fetch.
+   */
+  ipcMain.handle(IPC_CHANNELS.SYSTEM_HALL_URL, async () => {
+    // LOCAL ONLY. The hall is served on this machine; when it is not running the
+    // seat says so. It must never reach for a public hostname - an Electron window
+    // has no business with Cloudflare, and a desktop app that dials out is a
+    // desktop app that leaks its errands.
+    return process.env.YMIR_HALL_URL ?? 'http://127.0.0.1:4322'
+  })
+
+  ipcMain.handle(IPC_CHANNELS.FLEET_LIST, async () => {
+    // Who is standing, from the ONE source: the control plane's connector reads
+    // herdr's live panes. Nothing is inferred here; if it cannot answer, the
+    // seat says empty rather than inventing a fleet.
+    try {
+      const { execFileSync } = await import('node:child_process');
+      const out = execFileSync(process.env.YMIR_ROOT ? `${process.env.YMIR_ROOT}/bin/desktop/hlidskjalf-agents.sh` : 'hlidskjalf-agents.sh',
+        [], { timeout: 4000 }).toString().trim();
+      return out.startsWith('[') ? JSON.parse(out) : [];
+    } catch {
+      return [];
+    }
   })
 
   ipcMain.handle(IPC_CHANNELS.SYSTEM_GET_VERSION, async () => {

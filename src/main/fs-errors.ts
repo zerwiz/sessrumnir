@@ -36,7 +36,7 @@ function errorCode(err: unknown): string | undefined {
 export function describeWriteError(err: unknown, filePath: string): Error {
   const code = errorCode(err)
   if (IS_WINDOWS && code !== undefined && BLOCKED_WRITE_CODES.has(code)) {
-    return new Error(t('errors.fs.blockedWrite', { path: filePath, code }))
+return new Error(t('errors.fs.blockedWrite', { path: filePath, code }))
   }
   return err instanceof Error ? err : new Error(String(err))
 }

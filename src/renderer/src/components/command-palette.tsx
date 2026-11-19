@@ -191,7 +191,7 @@ export function CommandPalette(): React.JSX.Element | null {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 pt-24"
+      className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 px-4 pt-24"
       onClick={close}
     >
       <div

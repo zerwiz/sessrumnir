@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, ipcMain, Menu, nativeImage, session, shell } from 'electron'
+import { app, BrowserWindow, dialog, ipcMain, Menu, nativeImage, screen, session, shell } from 'electron'
 import { existsSync, mkdirSync } from 'fs'
 import { basename, join, resolve as resolvePath } from 'path'
 import { isTrustedRendererUrl, RENDERER_INDEX_PATH } from './renderer-origin'
@@ -19,13 +19,17 @@ import { IPC_CHANNELS } from '../shared/ipc-contracts'
 
 // Env var honored on startup: if set, the named directory becomes the active
 // workspace (created on first run, switched to on subsequent runs). The CLI
-// launcher in bin/pi-desktop.js sets this from `pi-desktop <path>`.
+// launcher in bin/sessrumnir.js sets this from `sessrumnir <path>`.
 const WORKSPACE_ENV_VAR = 'PI_DESKTOP_WORKSPACE'
 
 // Electron's development executable otherwise registers as Electron on Windows,
 // which makes the taskbar and notification identity use Electron branding.
 app.setName('Sessrúmnir')
-if (process.platform === 'win32') app.setAppUserModelId('dev.pi.desktop-gui')
+if (process.platform === 'win32') app.setAppUserModelId('org.ymir.sessrumnir')
+if (process.platform === 'linux') {
+  app.setDesktopName('ymir-sessrumnir.desktop');
+  app.commandLine.appendSwitch('class', 'ymir-sessrumnir');
+}
 
 // Suppress EPIPE errors from closed subprocess pipes
 process.on('uncaughtException', (err) => {
@@ -41,10 +45,35 @@ process.on('uncaughtException', (err) => {
 
 const WINDOW_WIDTH = 1400
 const WINDOW_HEIGHT = 900
-const MIN_WINDOW_WIDTH = 800
-const MIN_WINDOW_HEIGHT = 600
+// Minimums must stay well below the compositor's tile size on a scaled screen.
+// On a 1920x1200 panel at 1.5 scale the logical work area is 1280x800, and a
+// half-width tile is ~414 DIP. A min width of 800 made the app fight the
+// compositor: the surface stayed at the tile size while the renderer viewport
+// clamped to 800 DIP, so the right half of the UI rendered outside the window.
+const MIN_WINDOW_WIDTH = 400
+const MIN_WINDOW_HEIGHT = 360
+
+// Fit the seat to the screen it lands on. A fixed 1400x900 is larger than a
+// 1280x800 logical work area (e.g. a 1920x1200 panel at 1.5 scale), which
+// pushes the window past the glass and clips the right side of the UI. Clamp
+// to the work area; never below the minimums (an even smaller work area wins).
+function fitWindowSize(): { width: number; height: number } {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize
+  const fit = (desired: number, min: number, avail: number): number =>
+    Math.max(Math.min(desired, avail), Math.min(min, avail))
+  return {
+    width: fit(WINDOW_WIDTH, MIN_WINDOW_WIDTH, width),
+    height: fit(WINDOW_HEIGHT, MIN_WINDOW_HEIGHT, height),
+  }
+}
 const DEV_SERVER_URL = process.env.ELECTRON_RENDERER_URL
 const PRELOAD_PATH = join(__dirname, '../preload/index.js')
+// Does this platform want the frame's minimize/maximize/close? The answer is the platform layer's
+// (`bin/host/host-sense.sh capability window-buttons`), resolved by the launcher and carried in as
+// YMIR_WINDOW_BUTTONS. A tiling compositor — Hyprland, Omarchy's session — draws no title bar of its
+// own and closes a window with a key, so the window is frameless there and no _ □ × can be drawn or
+// shown (the Allfather, 2026-11-14). Elsewhere the platform keeps its frame; unset = that default.
+const WINDOW_BUTTONS = String(process.env.YMIR_WINDOW_BUTTONS ?? 'on').toLowerCase() !== 'off'
 // <webview> partitions used by the file preview (see file-tree.tsx). The HTML
 // preview renders untrusted workspace files with scripts and network disabled;
 // the PDF preview needs pdfium (plugins) and is confined to file:// only.
@@ -169,13 +198,22 @@ function hardenPreviewSession(): void {
 
 function createMainWindow(): BrowserWindow {
   const appIcon = nativeImage.createFromPath(getAppIconPath())
+  const { width, height } = fitWindowSize()
   const window = new BrowserWindow({
-    width: WINDOW_WIDTH,
-    height: WINDOW_HEIGHT,
+    width,
+    height,
     minWidth: MIN_WINDOW_WIDTH,
     minHeight: MIN_WINDOW_HEIGHT,
     title: 'Sessrúmnir',
-    backgroundColor: '#0a0a0a',
+    // The frame's buttons are the PLATFORM LAYER's question, never this file's: the launcher asks
+    // `bin/host/host-sense.sh capability window-buttons` and carries the answer in as YMIR_WINDOW_BUTTONS.
+    // A tiling compositor — Hyprland, Omarchy's session — draws no title bar of its own and closes a
+    // window with a key, so the window is frameless there and no _ □ × can be drawn or shown (the
+    // Allfather, 2026-11-14: "on Omarchy none of the _ □ × buttons should be visible in any app").
+    // Everywhere else the platform keeps its own frame; unset (a hand launch) is that platform default.
+    // Nothing else changes: the menu stays set, so its accelerators are still the keyboard road in.
+    frame: WINDOW_BUTTONS,
+    backgroundColor: '#151209',
     icon: appIcon,
     show: false,
     webPreferences: {
@@ -341,6 +379,10 @@ function createApplicationMenu(): void {
             focusedWindow?.webContents.send('menu:open-project')
           },
         },
+        { type: 'separator' },
+        // No "Go to Hlidskjalf / Smiðja" and no gate sign-in (plan 275 items 30
+        // and 33): every app opens from its own desktop icon, and the halls carry
+        // no login — the desktop session is the authority.
         { type: 'separator' },
         // Role items get explicit labels: Electron's own role labels are English.
         { role: 'quit', label: t('app.quit') },

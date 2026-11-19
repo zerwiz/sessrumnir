@@ -5,7 +5,7 @@ import { Plus, Trash2, Save, RefreshCw, AlertTriangle } from 'lucide-react'
 import { useAppStore } from '../store'
 import { withImageInput } from '../../../shared/models-config'
 import type { ModelsConfig, ProviderConfig, CustomModel } from '../../../shared/models-config'
-import { agentEngineLabel, DEFAULT_AGENT_ENGINE_LABEL } from '../../../shared/agent-engine-label'
+import { agentEngineName, DEFAULT_AGENT_ENGINE_NAME } from '../../../shared/agent-engine-label'
 
 const API_OPTIONS = [
   'openai-completions',
@@ -59,7 +59,7 @@ export function CustomModelsEditor(): React.JSX.Element {
   // Main resolves which engine and file the editor targets; the labels show
   // exactly that so they can never name a file the save does not touch.
   const modelsFile = useAppStore((s) => s.customModelsFile)
-  const engineLabel = agentEngineLabel(modelsFile?.engine ?? null) ?? DEFAULT_AGENT_ENGINE_LABEL
+  const engineLabel = agentEngineName(modelsFile?.engine ?? null) ?? DEFAULT_AGENT_ENGINE_NAME
   const modelsFileName = modelsFile?.name ?? t('customModels.defaultFileName')
   const modelsFilePath = modelsFile?.file ?? modelsFileName
 
@@ -307,7 +307,7 @@ export function CustomModelsEditor(): React.JSX.Element {
       <div className="flex items-center gap-3">
         <button
           onClick={handleSave}
-          className="flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm text-white hover:bg-accent-hover transition-colors"
+          className="flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm text-inverse hover:bg-accent-hover transition-colors"
         >
           <Save size={14} />
           {t('customModels.saveButton', { fileName: modelsFileName })}
