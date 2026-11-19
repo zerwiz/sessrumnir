@@ -48,9 +48,13 @@ const BUILTIN_THEME_NAME_KEYS = {
   'breeze-claudius': 'themes.builtin.breeze-claudius',
   sessrumnir: 'themes.builtin.sessrumnir',
   fensalir: 'themes.builtin.fensalir',
-} as const satisfies Record<BuiltinThemeId, string>
+} as const
 
 /** Built-in themes show a translated name; user and gallery themes keep their own. */
 export function themeDisplayName(id: string, fileName: string): string {
-  return isBuiltinThemeId(id) ? t(BUILTIN_THEME_NAME_KEYS[id]) : fileName
+  if (!isBuiltinThemeId(id)) return fileName
+  const themeId: BuiltinThemeId = id
+  type ThemeNameKey = typeof BUILTIN_THEME_NAME_KEYS[BuiltinThemeId]
+  const key: ThemeNameKey = BUILTIN_THEME_NAME_KEYS[themeId]
+  return t(key)
 }

@@ -17,7 +17,7 @@ import type {
   ProviderKeyState,
 } from '../../../shared/ipc-contracts'
 import { useAppStore } from '../store'
-import { DEFAULT_AGENT_ENGINE_LABEL, agentEngineLabel } from '../../../shared/agent-engine-label'
+import { DEFAULT_AGENT_ENGINE_NAME, agentEngineName } from '../../../shared/agent-engine-label'
 import { formatRelativeTime } from '../utils/format-relative-time'
 import { formatIpcError } from '../utils/ipc-error'
 import { processStatusLabel } from '../utils/process-status-label'
@@ -50,6 +50,7 @@ const ENGINE_INSTALL_SOURCE = 'omp'
 // The copied report keeps the raw values; only the panel shows these labels.
 const RESOLUTION_SOURCE_LABEL_KEYS = {
   override: 'diagnostics.resolutionSource.override',
+  'house-door': 'diagnostics.resolutionSource.houseDoor',
   'npm-prefix': 'diagnostics.resolutionSource.npmPrefix',
   path: 'diagnostics.resolutionSource.path',
   'version-manager': 'diagnostics.resolutionSource.versionManager',
@@ -79,7 +80,7 @@ export function DiagnosticsPanel(): React.JSX.Element {
   const [loadError, setLoadError] = useState<string | null>(null)
   // The report describes whichever CLI resolved, so labelling it "Pi version"
   // while OMP is configured reports the wrong program's version number.
-  const engineLabel = useAppStore((state) => agentEngineLabel(state.piEngine) ?? DEFAULT_AGENT_ENGINE_LABEL)
+  const engineLabel = useAppStore((state) => agentEngineName(state.piEngine) ?? DEFAULT_AGENT_ENGINE_NAME)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -175,7 +176,7 @@ export function DiagnosticsPanel(): React.JSX.Element {
                 label={t('diagnostics.fields.resolutionSource')}
                 value={
                   report.piBinary.source === ENGINE_INSTALL_SOURCE
-                    ? t('diagnostics.resolutionSource.engineInstall', { agent: agentEngineLabel(ENGINE_INSTALL_SOURCE) })
+                    ? t('diagnostics.resolutionSource.engineInstall', { agent: agentEngineName(ENGINE_INSTALL_SOURCE) })
                     : t(RESOLUTION_SOURCE_LABEL_KEYS[report.piBinary.source])
                 }
               />

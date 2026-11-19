@@ -22,7 +22,7 @@ export function StatusBar(): React.JSX.Element {
   const piPid = useAppStore((state) => state.piPid)
   // Name the engine that is actually running; the two are not interchangeable
   // and a user who switched to OMP should not be told Pi is running.
-  const engineLabel = useAppStore((state) => agentEngineLabel(state.piEngine) ?? 'Pi')
+  const engineLabel = useAppStore((state) => agentEngineLabel(state.piEngine) ?? 'Brokk')
   const sessionStats = useAppStore((state) => state.sessionStats)
   const isStreaming = useAppStore((state) => state.isStreaming)
   const pendingSteering = useAppStore((state) => state.pendingSteering)

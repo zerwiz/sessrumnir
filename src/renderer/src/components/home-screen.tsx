@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getSessionTitle } from '../utils/session-title'
 import { DEFAULT_AGENT_ENGINE_LABEL, agentEngineLabel } from '../../../shared/agent-engine-label'
-import { PI_DESKTOP_PRODUCT_NAME } from '../../../shared/product-name'
+import { SESSRUMNIR_PRODUCT_NAME } from '../../../shared/product-name'
+import piLogo from '../assets/pi-logo.svg'
 import { clsx } from 'clsx'
 import {
   FolderOpen,
@@ -15,7 +16,7 @@ import {
   Play,
 } from 'lucide-react'
 import { useAppStore } from '../store'
-import piLogo from '../assets/pi-logo.svg'
+import { EmberBackground } from './ember-background'
 import { formatGitStatus } from './review-rail'
 import { StatsPanel } from './stats-panel'
 import type { GitFileStatus, SessionListItem } from '../../../shared/ipc-contracts'
@@ -134,11 +135,23 @@ export function HomeInfoSummary({ compact }: { compact?: boolean }): React.JSX.E
   }
 
   return (
-    <div className={clsx(busy && 'pointer-events-none opacity-60', compact && 'space-y-4')}>
+    <div
+      className={clsx(
+        busy && 'pointer-events-none opacity-60',
+        compact && 'space-y-4',
+        // `isolate` is the landing's half of the 2026-09-19 lesson (docs/fixes/sessrumnir):
+        // a canvas at -z-10 sinks BEHIND an ancestor's background unless its own node is
+        // a stacking context. .chat-center got that fix; the start interface never did, so
+        // the fire was drawn every frame into a layer nobody could see. Do not remove it.
+        'relative z-0 isolate'
+      )}
+    >
+      {/* The hearth — the landing's fire-dots behind the high seat too */}
+      <EmberBackground className="pointer-events-none absolute inset-0 -z-10" />
       <StatsPanel />
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <section className="space-y-3">
+      <div className="grid min-w-0 gap-6 md:grid-cols-2">
+        <section className="min-w-0 space-y-3">
           <div className="rounded-lg border border-border bg-surface/50">
             <div className="flex items-center justify-between px-4 py-2.5">
               <SectionLabel className="mb-0">{t('common.changedFilesHeading')}</SectionLabel>
@@ -179,7 +192,7 @@ export function HomeInfoSummary({ compact }: { compact?: boolean }): React.JSX.E
           </div>
         </section>
 
-        <section className="space-y-6">
+        <section className="min-w-0 space-y-6">
           <div>
             <SectionLabel>{t('home.recentWorkspaces.title')}</SectionLabel>
             <div className="space-y-1.5">
@@ -344,8 +357,8 @@ function HomeScreenInfo(): React.JSX.Element {
         <PiErrorBanner />
 
         <div className="mb-6 flex flex-col items-center text-center">
-          <img src={piLogo} alt={PI_DESKTOP_PRODUCT_NAME} className="h-16 w-16" />
-          <h1 className="mt-4 text-2xl font-semibold text-primary">{PI_DESKTOP_PRODUCT_NAME}</h1>
+          <img src={piLogo} alt={SESSRUMNIR_PRODUCT_NAME} className="h-16 w-16" />
+          <h1 className="mt-4 text-2xl font-semibold text-primary">{SESSRUMNIR_PRODUCT_NAME}</h1>
           <p className="mt-1 text-sm text-dim">{t('home.subtitle')}</p>
         </div>
 

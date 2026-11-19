@@ -426,8 +426,8 @@ interface AppActions {
 
   // Prompts
   sendPrompt: (message: string, options?: { images?: PromptImage[]; attachments?: DisplayAttachment[] }) => Promise<void>
-  sendSteer: (message: string) => Promise<void>
-  sendFollowUp: (message: string) => Promise<void>
+  sendSteer: (message: string, images?: PromptImage[]) => Promise<void>
+  sendFollowUp: (message: string, images?: PromptImage[]) => Promise<void>
   runCouncil: (request: string) => Promise<void>
   approveCouncilPlan: () => Promise<void>
   reviseCouncilPlan: (feedback: string) => Promise<void>
@@ -474,6 +474,9 @@ interface AppActions {
   setWorkflowPanelOpen: (open: boolean) => void
   openWorkflowRunsForSession: (sessionId: string) => void
   openWorkflowRunsForWorkspace: (workspaceId: string | null) => void
+  /** The live fleet: every opencode/pi session, from the machine itself. */
+  fleet: Array<{ id: string; name: string; status: string; live?: { kind?: string; state?: string; task?: string; cwd?: string } }>
+  refreshFleet: () => Promise<void>
   refreshWorkflowRuns: () => Promise<void>
   requestChatScrollToBottom: () => void
   // Resolves false when a dirty-editor discard was declined (diff pane only).
@@ -915,6 +918,7 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
   pendingPromptCounts: {},
   workspaceActivity: {},
   workflowRuns: [],
+  fleet: [],
   extensionStatuses: {},
   subagentProgress: [],
   confirmRequest: null,
@@ -1082,9 +1086,12 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
 
     try {
       if (isStreaming) {
-        // Queue as steering during streaming, carrying any image attachments.
+        // A message typed while the agent is working is QUEUED, not injected:
+        // Pi's follow-up enters only after the current run has finished all its
+        // tool calls. Interrupting on purpose is a separate, deliberate gesture
+        // (Ctrl/Cmd+Enter or Alt+Enter in the composer), never the default.
         recordLocalEcho(message)
-        await window.piDesktop.commands.steer(message, options?.images)
+        await window.piDesktop.commands.followUp(message, options?.images)
       } else {
         const prompt = settings?.permissionMode === 'plan-readonly'
           ? buildPlanningPrompt(message)
@@ -1105,12 +1112,12 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
     }
   },
 
-  sendSteer: async (message) => {
+  sendSteer: async (message, images) => {
     try {
       // Steers are intentionally not rendered as bubbles; record the echo so
       // the message_start handler does not render one as an external prompt.
       recordLocalEcho(message)
-      await window.piDesktop.commands.steer(message)
+      await window.piDesktop.commands.steer(message, images)
     } catch (err) {
       get().addMessage({
         id: generateId(),
@@ -1121,11 +1128,11 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
     }
   },
 
-  sendFollowUp: async (message) => {
+  sendFollowUp: async (message, images) => {
     try {
       // Same as sendSteer: suppress the echo-rendered external bubble.
       recordLocalEcho(message)
-      await window.piDesktop.commands.followUp(message)
+      await window.piDesktop.commands.followUp(message, images)
     } catch (err) {
       get().addMessage({
         id: generateId(),
@@ -1856,6 +1863,16 @@ export const useAppStore = create<AppState & AppActions>((set, get) => ({
     workflowPanelFilter: null,
     workflowPanelWorkspaceId: workspaceId,
   }),
+  refreshFleet: async () => {
+    // Read the same source the control plane reads; empty on failure rather than
+    // a stale fleet, because a ghost card is worse than an empty board.
+    try {
+      const rows = (await window.piDesktop.system.fleet()) as Array<{ id: string; name: string; status: string; live?: { kind?: string; state?: string; task?: string; cwd?: string } }>
+      set({ fleet: Array.isArray(rows) ? rows : [] })
+    } catch {
+      set({ fleet: [] })
+    }
+  },
   refreshWorkflowRuns: async () => {
     try {
       const workflowRuns = await window.piDesktop.workflows.list()

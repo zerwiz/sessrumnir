@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 
 /**
- * pi-desktop — CLI launcher for Pi Desktop GUI
+ * sessrumnir — CLI launcher for the Sessrúmnir desktop GUI
  *
  * Usage:
- *   pi-desktop              # Launch the app
- *   pi-desktop --help       # Show help
- *   pi-desktop --version    # Show version
- *   pi-desktop /path/to/dir # Launch with workspace
+ *   sessrumnir                 # Launch the app
+ *   sessrumnir --help          # Show help
+ *   sessrumnir --version       # Show version
+ *   sessrumnir /path/to/dir    # Launch with workspace
  */
 
 const { spawn } = require('child_process')
 const { existsSync } = require('fs')
-const { join, resolve } = require('path')
+const { join, resolve, dirname } = require('path')
 
 const VERSION = require('../package.json').version
 
@@ -22,21 +22,21 @@ const args = process.argv.slice(2)
 
 if (args.includes('--help') || args.includes('-h')) {
   console.log(`
-  pi-desktop v${VERSION} — Desktop GUI for the Pi coding agent
+  sessrumnir v${VERSION} — Desktop seat of Ymir (GUI for the Pi/OMP coding agents)
 
   Usage:
-    pi-desktop                  Launch the app
-    pi-desktop <path>           Launch with workspace directory
-    pi-desktop --help           Show this help
-    pi-desktop --version        Show version
+    sessrumnir                  Launch the app
+    sessrumnir <path>           Launch with workspace directory
+    sessrumnir --help           Show this help
+    sessrumnir --version        Show version
 
   Examples:
-    pi-desktop                  # Launch with default workspace
-    pi-desktop ~/my-project     # Launch with specific project
-    pi-desktop .                # Launch with current directory
+    sessrumnir                  # Launch with default workspace
+    sessrumnir ~/my-project     # Launch with specific project
+    sessrumnir .                # Launch with current directory
 
   Install:
-    See https://github.com/FaqFirebase/pi-desktop for releases
+    See https://github.com/zerwiz/ymir for releases
     and build-from-source instructions.
 
   The app requires Pi to be installed:
@@ -55,11 +55,21 @@ if (args.includes('--version') || args.includes('-v')) {
 // ─── Find Electron binary ────────────────────────────────────────────────────
 
 function findElectron() {
-  // Try to find electron from the package's own node_modules
-  const candidates = [
-    join(__dirname, '..', 'node_modules', 'electron', 'dist', 'electron'),
-    join(__dirname, '..', 'node_modules', '.bin', 'electron'),
-  ]
+  // a named binary wins (the launcher's own test seats a stand-in here; never set it in daily use)
+  if (process.env.SESSRUMNIR_ELECTRON && existsSync(process.env.SESSRUMNIR_ELECTRON)) {
+    return process.env.SESSRUMNIR_ELECTRON
+  }
+  // The app's own node_modules, then every ancestor's (plan 275 S10, 2026-11-12): every Ymir app shares ONE
+  // Electron, which npm hoists to the workspace root — the app-local copy no longer exists, and looking only here
+  // left Sessrúmnir with "Electron not found" while the release held a proved 43.8.9 two folders up.
+  const candidates = []
+  for (let d = join(__dirname, '..'); ; d = dirname(d)) {
+    // the binary's place inside dist/ differs per OS (2026-11-16: a Mac's is Electron.app/Contents/MacOS/Electron)
+    const exe = process.platform === 'darwin' ? join('Electron.app', 'Contents', 'MacOS', 'Electron')
+      : process.platform === 'win32' ? 'electron.exe' : 'electron'
+    candidates.push(join(d, 'node_modules', 'electron', 'dist', exe))
+    if (dirname(d) === d) break
+  }
 
   for (const candidate of candidates) {
     if (existsSync(candidate)) {
@@ -129,16 +139,48 @@ function launch() {
 
   // Build electron args.
   // --no-sandbox is required so Pi subprocesses can spawn.
-  // --disable-gpu is intentionally NOT passed by default — it breaks window
-  // creation on some Wayland + AMD setups. If the GPU process crashes on your
-  // system, re-add it locally as an escape hatch.
-  const electronArgs = [
-    appPath,
-    '--no-sandbox',
-  ]
+  // GPU safety (P7, 2026-09-24): bin/desktop/sessrumnir.sh resolves the ONE machine-wide
+  // graphics policy (bin/host/graphics-lib.sh) and exports the effective override in
+  // YMIR_DESKTOP_DISABLE_GPU (1 = software rendering). On a fragile hybrid the
+  // Electron GPU process dies for want of a fence and the browser makes SIGTRAP
+  // suicide once the process is judged unusable — the same fix scripts/electron.sh
+  // applies to hlidskjalf/smidja/odrerir. The DECISION lives in the launcher,
+  // never hardcoded here.
+  const electronArgs = [appPath, '--no-sandbox']
+  // plan 275 S16: the DevTools port, so the app can be tested as a person uses it (unset = none)
+  if (process.env.YMIR_DEVTOOLS_PORT) {
+    electronArgs.push(`--remote-debugging-port=${process.env.YMIR_DEVTOOLS_PORT}`)
+    // Chromium refuses a DevTools websocket that carries an Origin header unless the origins
+    // are named, and every scripted client (node's built-in WebSocket, any harness) sends one.
+    // Without this the door answers /json and then fails the handshake — measured 2026-11-13.
+    // Only while the door is open, and the port binds loopback by default.
+    electronArgs.push('--remote-allow-origins=*')
+  }
+  if (['1', 'true', 'yes'].includes(String(process.env.YMIR_DESKTOP_DISABLE_GPU ?? '').toLowerCase())) {
+    electronArgs.push('--disable-gpu', '--disable-gpu-compositing')
+    // MEASURED 2026-11-14 on this machine: with `--disable-gpu` and NO ozone flag, the
+    // window is created and never maps on Wayland — the compositor lists no client, the
+    // operator sees nothing and clicks the icon again ("it starts over and over"). The
+    // same app with `--disable-gpu --ozone-platform=x11` maps at once (XWayland draws the
+    // software-composited window). The graphics policy resolves to `software` on this
+    // hybrid box, so this is the path every launch takes here; other platforms and X11
+    // sessions are untouched.
+    // Which surface: the operator's choice (`YMIR_DESKTOP_OZONE_PLATFORM`, from the home's
+    // config/desktop.env), else the measured default on a Wayland session.
+    const ozone = String(process.env.YMIR_DESKTOP_OZONE_PLATFORM || 'auto').toLowerCase()
+    if (ozone === 'x11' || ozone === 'wayland') {
+      electronArgs.push(`--ozone-platform=${ozone}`)
+    } else if (process.platform === 'linux' && process.env.WAYLAND_DISPLAY) {
+      electronArgs.push('--ozone-platform=x11')
+    }
+  }
 
   // Pass workspace path via environment variable
   const env = { ...process.env }
+  // Chromium's own error lines go to the log: an empty log was the whole of the 2026-11-12 mystery.
+  if (!env.ELECTRON_ENABLE_LOGGING) env.ELECTRON_ENABLE_LOGGING = '1'
+  // The repo root, so the renderer can reach hodd/, svartalfaheim/, workspace/.
+  env.YMIR_ROOT = resolve(__dirname, '..', '..', '..')
   if (workspacePath) {
     env.PI_DESKTOP_WORKSPACE = workspacePath
   }
@@ -150,13 +192,21 @@ function launch() {
     detached: false,
   })
 
+  const startedAt = Date.now()
+  console.log(`[sessrumnir] electron started pid=${child.pid} app=${appPath}`)
+
   child.on('error', (err) => {
-    console.error('Failed to start Pi Desktop:', err.message)
+    console.error(`[sessrumnir] electron failed to start: ${err.message}`)
     process.exit(1)
   })
 
-  child.on('exit', (code) => {
-    process.exit(code ?? 0)
+  // Say how the window ended. A signal death (SIGTRAP, SIGSEGV, SIGKILL) used to leave NOTHING:
+  // `code` is null then, and the old handler exited 0 in silence (plan 271 piece 4).
+  child.on('exit', (code, signal) => {
+    const secs = ((Date.now() - startedAt) / 1000).toFixed(1)
+    console.error(`[sessrumnir] electron exited code=${code} signal=${signal || 'none'} after ${secs}s`)
+    const sigNum = signal ? (require('os').constants.signals[signal] || 1) : 0
+    process.exit(signal ? 128 + sigNum : (code ?? 0))
   })
 
   // Forward signals

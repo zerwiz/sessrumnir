@@ -1,4 +1,4 @@
-# Contributing to Pi Desktop
+# Contributing to Sessrúmnir
 
 This guide covers bug reports, feature requests, and the pull request workflow.
 
@@ -30,7 +30,7 @@ By submitting a pull request, you acknowledge that you have read and agree to th
 
 ### Reporting bugs
 
-1. Check [existing issues](https://github.com/FaqFirebase/pi-desktop/issues) first
+1. Check [existing issues](https://github.com/zerwiz/ymir/issues) first
 2. Open a new issue with:
    - Clear title and description
    - Steps to reproduce
@@ -40,7 +40,7 @@ By submitting a pull request, you acknowledge that you have read and agree to th
 
 ### Suggesting features
 
-1. Open a [feature request](https://github.com/FaqFirebase/pi-desktop/issues/new?template=feature_request.yml)
+1. Open a [feature request](https://github.com/zerwiz/ymir/issues/new?template=feature_request.yml)
 2. Describe the use case and expected behavior
 3. Explain why this would be useful to other users
 
@@ -147,7 +147,7 @@ Interface text lives in `resources/locales/<code>/translation.json`. English (`e
 To add a language:
 
 1. Copy `resources/locales/en/translation.json` to `resources/locales/<code>/translation.json`. Use a BCP 47 code such as `de`, `pt-BR`, or `zh-Hans`.
-2. Translate the values. Do not change keys, `{{placeholders}}`, `<tags>`, or the product names Pi Desktop, Pi, and OMP. Leave a value empty if you are not sure; the app shows English for it.
+2. Translate the values. Do not change keys, `{{placeholders}}`, `<tags>`, or the product names Sessrúmnir, Pi, and OMP. Leave a value empty if you are not sure; the app shows English for it.
 3. Set `language.nativeName` to the language's own name, for example `Deutsch`.
 4. Add the file to `src/shared/i18n/resources.ts` (one import and one entry).
 5. Run `npm run lint` and the unit tests, then open a pull request. The CLA applies to translations.
@@ -226,8 +226,12 @@ This is a guide, not a full listing. `AGENTS.md` carries the complete module map
 
 ## Getting help
 
-Report problems on [GitHub Issues](https://github.com/FaqFirebase/pi-desktop/issues) and ask questions in [GitHub Discussions](https://github.com/FaqFirebase/pi-desktop/discussions). For documentation, read [README.md](README.md) for an overview and the source under `src/` for implementation details.
+Report problems on [GitHub Issues](https://github.com/zerwiz/ymir/issues) and ask questions in [GitHub Discussions](https://github.com/zerwiz/ymir/discussions). For documentation, read [README.md](README.md) for an overview and the source under `src/` for implementation details.
 
 ## License
 
 By contributing to this project, you agree that your contributions will be licensed under the [Apache License 2.0](LICENSE).
+
+## CHANGE LOG
+
+- **2026-11-12** — this document gained a CHANGE LOG section so it carries its history (RULES/06). Its earlier history is its git log; entries are appended below, never rewritten.
