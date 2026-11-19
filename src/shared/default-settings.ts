@@ -13,7 +13,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   piExecutablePath: 'pi',
   piEngine: 'auto',
   defaultArgs: [],
-  theme: 'system',
+theme: 'sessrumnir',
   systemLightTheme: 'light',
   systemDarkTheme: 'dark',
   defaultModel: null,

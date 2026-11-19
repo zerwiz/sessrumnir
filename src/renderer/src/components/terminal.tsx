@@ -33,22 +33,22 @@ function buildTerminalTheme(): ITheme {
     background: bg,
     foreground: fg,
     cursor: fg,
-    selectionBackground: v('--cm-selection-bg', '#3b82f666'),
+    selectionBackground: v('--cm-selection-bg', '#c9973f66'),
     black: bg,
     red: v('--color-error', '#ef4444'),
     green: v('--color-success', '#22c55e'),
     yellow: v('--color-warning', '#eab308'),
-    blue: v('--color-accent', '#3b82f6'),
-    magenta: v('--cm-keyword', '#a855f7'),
-    cyan: v('--cm-link', '#06b6d4'),
+    blue: v('--color-accent', '#c9973f'),
+    magenta: v('--cm-keyword', '#96a0a8'),
+    cyan: v('--cm-link', '#7d5f2a'),
     white: fg,
     brightBlack: v('--color-muted', '#525252'),
     brightRed: v('--color-error', '#f87171'),
     brightGreen: v('--color-success', '#4ade80'),
     brightYellow: v('--color-warning', '#facc15'),
-    brightBlue: v('--color-accent', '#60a5fa'),
-    brightMagenta: v('--cm-keyword', '#c084fc'),
-    brightCyan: v('--cm-link', '#22d3ee'),
+    brightBlue: v('--color-accent', '#eca654'),
+    brightMagenta: v('--cm-keyword', '#cfc3a9'),
+    brightCyan: v('--cm-link', '#c9973f'),
     brightWhite: v('--color-secondary', '#ffffff'),
   }
 }
@@ -72,7 +72,7 @@ export function TerminalPanel(): React.JSX.Element | null {
     const terminal = new XTerm({
       cursorBlink: true,
       convertEol: true,
-      fontFamily: "'JetBrains Mono Variable', 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace",
+      fontFamily: "'IBM Plex Mono', 'JetBrains Mono Variable', 'Fira Code', 'Cascadia Code', monospace",
       // Use the Terminal Font Size setting (or the unsaved settings draft),
       // read once at creation. Applied on the next mount — i.e. when the user
       // returns to chat — rather than live, to avoid resizing a hidden pty.

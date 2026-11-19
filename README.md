@@ -1,8 +1,14 @@
-# Pi Desktop
+# Sessrúmnir
 
 A desktop GUI for the [Pi](https://pi.dev) and [oh-my-pi](https://github.com/can1357/oh-my-pi) coding agents. Chat, manage projects, browse files, run commands, and install packages in one window.
 
-![Pi Desktop — Home launcher screen](docs/screenshots/Screenshot_20260824_181929.png)
+> **Ymir adoption:** this is a vendored fork of the Apache-2.0 **pi-desktop**
+> project (`github.com/FaqFirebase/pi-desktop`, v0.1.7-alpha), rebranded
+> **Sessrúmnir** and wearing the carved cloth of the halls (stone, bone, bronze
+> and blood — the landing page's own palette and type). See `AGENTS.md` for the
+> adoption notes; upstream provenance and license are preserved.
+
+![Sessrúmnir — Home launcher screen](docs/screenshots/Screenshot_20260824_181929.png)
 
 Still in alpha, so expect rough edges.
 
@@ -26,7 +32,7 @@ Still in alpha, so expect rough edges.
 - File tree, code/image/PDF/HTML preview panes, code editor (CodeMirror 6 with syntax highlighting), diff viewer, file search
 - Terminal with ANSI colors
 - Package browser connected to pi.dev/packages, with instant local search and update checks for installed packages
-- Session tags, model switching, live-preview settings, themes (7 built-ins plus System, and custom themes you can create in-app, import, export, or install from a URL)
+- Session tags, model switching, live-preview settings, themes (8 built-ins — Sessrúmnir is the default — plus System, and custom themes you can create in-app, import, export, or install from a URL)
 - [Translatable interface](#languages): pick the language in Settings (English ships today)
 
 ## Review rail
@@ -46,7 +52,7 @@ Changed files use readable status badges:
 
 ## Pi and OMP engines
 
-Pi Desktop speaks Pi's RPC protocol directly, so it can run either the standard `pi` CLI or the compatible `omp` binary from [oh-my-pi](https://github.com/can1357/oh-my-pi). **Settings → Agent Configuration → Agent Installation** scans for installed engines, lets you select one, and also supports a custom executable or install directory.
+Sessrúmnir speaks Pi's RPC protocol directly, so it can run either the standard `pi` CLI or the compatible `omp` binary from [oh-my-pi](https://github.com/can1357/oh-my-pi). **Settings → Agent Configuration → Agent Installation** scans for installed engines, lets you select one, and also supports a custom executable or install directory.
 
 Each engine keeps its own sessions: Pi writes to `~/.pi/agent/sessions`, OMP to `~/.omp/agent/sessions`. The app reads both, so switching engines never hides your history. When sessions from both appear in one list, each row is tagged `Pi` or `OMP`, and opening one starts the engine that wrote it.
 
@@ -81,7 +87,7 @@ Example rules:
 
 ## Custom themes
 
-Pi Desktop ships 7 built-in themes (Dark, Light, Nord, Gruvbox, Breeze Dark, Breeze Light, Breeze Claudius) plus System, and you can create your own from **Settings → Appearance**. With **System** selected, **Light Theme** and **Dark Theme** choose which installed theme each OS mode uses.
+Sessrúmnir ships 7 built-in themes (Dark, Light, Nord, Gruvbox, Breeze Dark, Breeze Light, Breeze Claudius) plus System, and you can create your own from **Settings → Appearance**. With **System** selected, **Light Theme** and **Dark Theme** choose which installed theme each OS mode uses.
 
 To build one in the app, click **Create theme** to fork the currently active theme, or **Edit theme** to keep editing one you already created. Pick 7 seed colors (app background, surface, text, accent, success, warning, error) and a dark or light kind; every other color in the app is derived from those seeds. Changes preview live across the whole window as you edit. Two disclosures cover finer control:
 
@@ -103,7 +109,7 @@ A theme file uses the `pi-theme/v1` format: JSON with a `$schema`, a `name`, a `
     "app": "#0a0a0a",
     "surface": "#171717",
     "text": "#f5f5f5",
-    "accent": "#2563eb",
+    "accent": "#c9973f",
     "success": "#34d399",
     "warning": "#facc15",
     "error": "#f87171"
@@ -115,7 +121,7 @@ Two optional top-level objects let you pin exact values instead of relying on de
 
 User theme files live in the app's user-data directory under `themes/` (on Linux, `~/.config/pi-desktop/themes/`).
 
-There's also a community gallery at [pi-desktop-themes](https://github.com/FaqFirebase/pi-desktop-themes): copy any theme's raw URL into **Install from URL**, or submit your own with a pull request.
+There's also a community gallery at [themes](apps/sessrumnir/themes): copy any theme's raw URL into **Install from URL**, or submit your own with a pull request.
 
 ## Languages
 
@@ -154,7 +160,7 @@ You need Pi installed first:
 npm install -g @earendil-works/pi-coding-agent
 ```
 
-On Linux, grab the AppImage from [Releases](https://github.com/FaqFirebase/pi-desktop/releases):
+On Linux, grab the AppImage from [Releases](https://github.com/zerwiz/ymir/releases):
 
 ```bash
 chmod +x Pi-Desktop-*.AppImage
@@ -163,27 +169,27 @@ chmod +x Pi-Desktop-*.AppImage
 
 ### macOS
 
-Download the `.dmg` (Apple Silicon / arm64) from [Releases](https://github.com/FaqFirebase/pi-desktop/releases), open it, and drag **Pi Desktop** to Applications.
+Download the `.dmg` (Apple Silicon / arm64) from [Releases](https://github.com/zerwiz/ymir/releases), open it, and drag **Sessrúmnir** to Applications.
 
 Builds are **not yet signed or notarized**. Because the download is unsigned, macOS quarantines it, and on first launch Gatekeeper shows this dialog (this is macOS's message, not our advice):
 
-> Pi Desktop is damaged and can't be opened. You should move it to the Trash.
+> Sessrúmnir is damaged and can't be opened. You should move it to the Trash.
 
 **Do not move it to the Trash.** The app is not damaged; this is just how Gatekeeper phrases its block on any unsigned app. macOS offers no "Open Anyway" button for this particular dialog, so clear the quarantine flag in Terminal instead:
 
 ```bash
-xattr -dr com.apple.quarantine "/Applications/Pi Desktop.app"
+xattr -dr com.apple.quarantine "/Applications/Sessrúmnir.app"
 ```
 
 Then open the app normally. You only need to do this once.
 
-> If macOS instead says the app **"cannot be opened because Apple cannot check it for malicious software,"** you can allow it without Terminal: open **System Settings → Privacy & Security**, scroll to the **Security** section, and click **Open Anyway** next to the Pi Desktop notice, then confirm with Touch ID / your password.
+> If macOS instead says the app **"cannot be opened because Apple cannot check it for malicious software,"** you can allow it without Terminal: open **System Settings → Privacy & Security**, scroll to the **Security** section, and click **Open Anyway** next to the Sessrúmnir notice, then confirm with Touch ID / your password.
 
 > If you'd rather skip the unsigned-app warnings entirely, build from source. A build you compile yourself runs locally without Gatekeeper blocking it, so there is no signing prompt and no quarantine flag to clear. See [Build it yourself → Linux / macOS](#linux--macos) below.
 
 ### Windows
 
-Download from [Releases](https://github.com/FaqFirebase/pi-desktop/releases): the **installer** (`…-win-x64-setup.exe`, recommended) or the **portable** `…-win-x64.exe`. Builds are unsigned, so SmartScreen may warn; choose **More info → Run anyway**. If file edits or saves fail, see the [Controlled Folder Access](#controlled-folder-access-ransomware-protection) note below. Windows is community-tested; please [open a bug report](https://github.com/FaqFirebase/pi-desktop/issues) if you hit an issue.
+Download from [Releases](https://github.com/zerwiz/ymir/releases): the **installer** (`…-win-x64-setup.exe`, recommended) or the **portable** `…-win-x64.exe`. Builds are unsigned, so SmartScreen may warn; choose **More info → Run anyway**. If file edits or saves fail, see the [Controlled Folder Access](#controlled-folder-access-ransomware-protection) note below. Windows is community-tested; please [open a bug report](https://github.com/zerwiz/ymir/issues) if you hit an issue.
 
 ## Keyboard shortcuts
 
@@ -209,8 +215,10 @@ Download from [Releases](https://github.com/FaqFirebase/pi-desktop/releases): th
 ### Linux / macOS
 
 ```bash
-git clone https://github.com/FaqFirebase/pi-desktop.git
-cd pi-desktop
+git clone https://github.com/zerwiz/ymir.git
+git sparse-checkout init --cone --sparse-index
+git sparse-checkout set apps/sessrumnir
+cd apps/sessrumnir
 npm install
 npm run dev
 ```
@@ -240,8 +248,10 @@ Settings → Privacy & Security → Windows Security → Virus & threat protecti
 #### 3. Clone and install
 
 ```powershell
-git clone https://github.com/FaqFirebase/pi-desktop.git
-cd pi-desktop
+git clone https://github.com/zerwiz/ymir.git
+git sparse-checkout init --cone --sparse-index
+git sparse-checkout set apps/sessrumnir
+cd apps/sessrumnir
 npm install
 ```
 
@@ -270,23 +280,24 @@ npm run dev
 | `MSB8040`: Spectre libs missing | VS Build Tools 2026 (v180 toolset) installed instead of 2022 (v143) | Uninstall 2026, install VS Build Tools 2022 with Spectre libs for v143 |
 | `electron-vite is not recognized` | `npm install` didn't complete | Run `npm install` again |
 | Electron binary missing after install | Electron's postinstall extraction left a partial or missing `dist` folder | Add the repo folder to Defender exclusions, then `npm install` again. If it still fails, use the manual download steps below |
-| `EPERM` / `EACCES` writing a project file | Controlled Folder Access (Ransomware protection) is blocking writes under Documents/Desktop | Keep the repo and your projects out of protected folders, or allow Pi Desktop through Controlled folder access (see below) |
+| `EPERM` / `EACCES` writing a project file | Controlled Folder Access (Ransomware protection) is blocking writes under Documents/Desktop | Keep the repo and your projects out of protected folders, or allow Sessrúmnir through Controlled folder access (see below) |
 | Pi shows "error" in status popover | Pi not installed or PATH not updated | Run the install script above in a **new** terminal window |
 
 #### Controlled Folder Access (Ransomware protection)
 
-Windows **Controlled Folder Access** protects `Documents`, `Desktop`, `Pictures`, and similar folders by silently blocking apps it doesn't trust from writing to them. Because Pi Desktop is a coding agent that edits files, this shows up as intermittent `EPERM`/`EACCES` failures (during `npm install`, when the agent edits code, or when you save a file) if your repo or projects live inside a protected folder.
+Windows **Controlled Folder Access** protects `Documents`, `Desktop`, `Pictures`, and similar folders by silently blocking apps it doesn't trust from writing to them. Because Sessrúmnir is a coding agent that edits files, this shows up as intermittent `EPERM`/`EACCES` failures (during `npm install`, when the agent edits code, or when you save a file) if your repo or projects live inside a protected folder.
 
 The reliable fix is to keep code out of protected folders. Clone the repo and put your projects somewhere unprotected, for example:
 
 ```powershell
 # Not C:\Users\<you>\Documents\... — use an unprotected path:
-git clone https://github.com/FaqFirebase/pi-desktop.git C:\dev\pi-desktop
+git clone https://github.com/zerwiz/ymir.git
+cd apps/sessrumnir
 ```
 
 If you must keep code under Documents/Desktop, allow the app instead:
 
-**Windows Security → Virus & threat protection → Ransomware protection → Manage ransomware protection → Allow an app through Controlled folder access → Add an allowed app**, then add the installed `Pi Desktop.exe` (and, for development, `node.exe`, `git.exe`, and `electron.exe`).
+**Windows Security → Virus & threat protection → Ransomware protection → Manage ransomware protection → Allow an app through Controlled folder access → Add an allowed app**, then add the installed `Sessrúmnir.exe` (and, for development, `node.exe`, `git.exe`, and `electron.exe`).
 
 > The portable `.exe` re-extracts to a temporary folder on each launch, so allow-listing it doesn't stick. Prefer the **installer** (`Pi-Desktop-<version>-win-x64-setup.exe`) if you rely on the allow-list approach.
 
@@ -309,7 +320,7 @@ Expand-Archive -Path $zip -DestinationPath node_modules\electron\dist -Force
 
 After this, `npm run dev` should work normally.
 
-> **Note:** Windows builds are community-tested. If you hit an issue not listed above, please [open a bug report](https://github.com/FaqFirebase/pi-desktop/issues).
+> **Note:** Windows builds are community-tested. If you hit an issue not listed above, please [open a bug report](https://github.com/zerwiz/ymir/issues).
 
 ## License
 
@@ -320,4 +331,8 @@ Apache 2.0
 - [pi-desktop.com](https://pi-desktop.com)
 - [pi.dev](https://pi.dev)
 - [Packages](https://pi.dev/packages)
-- [Issues](https://github.com/FaqFirebase/pi-desktop/issues)
+- [Issues](https://github.com/zerwiz/ymir/issues)
+
+## CHANGE LOG
+
+- **2026-11-12** — this document gained a CHANGE LOG section so it carries its history (RULES/06). Its earlier history is its git log; entries are appended below, never rewritten.

@@ -1,5 +1,5 @@
 import { useAppStore } from '../store'
-import { DEFAULT_AGENT_ENGINE_LABEL, agentEngineLabel } from '../../../shared/agent-engine-label'
+import { DEFAULT_AGENT_ENGINE_NAME, agentEngineName } from '../../../shared/agent-engine-label'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { clsx } from 'clsx'
 import { useTranslation } from 'react-i18next'
@@ -91,7 +91,7 @@ export function SettingsPanel(): React.JSX.Element {
   const [piEngine, setPiEngine] = useState<AgentEngine>(initialPiEngine)
   // The setting above may be 'auto'; this is the engine that actually resolved,
   // which is what any sentence naming the running agent has to say.
-  const runningEngineLabel = useAppStore((state) => agentEngineLabel(state.piEngine) ?? DEFAULT_AGENT_ENGINE_LABEL)
+  const runningEngineLabel = useAppStore((state) => agentEngineName(state.piEngine) ?? DEFAULT_AGENT_ENGINE_NAME)
   const [customAgentPathMode, setCustomAgentPathMode] = useState(() => {
     const normalized = initialPiPath.trim().toLowerCase()
     return Boolean(initialPiPath.trim()) && normalized !== 'pi' && normalized !== 'omp'
@@ -697,7 +697,7 @@ export function SettingsPanel(): React.JSX.Element {
                   {detectedAgentInstalls.map((installation) => (
                     <option key={`${installation.kind}:${installation.path}`} value={installation.path}>
                       {t('settings.agentInstallation.installedOption', {
-                        engine: agentEngineLabel(installation.kind) ?? DEFAULT_AGENT_ENGINE_LABEL,
+                        engine: agentEngineName(installation.kind) ?? DEFAULT_AGENT_ENGINE_NAME,
                         path: installation.path,
                       })}
                     </option>
@@ -739,8 +739,8 @@ export function SettingsPanel(): React.JSX.Element {
                     className="rounded-md border border-border-strong bg-surface px-2 py-1.5 text-sm text-primary focus:border-focus focus:outline-none"
                   >
                     <option value="auto">{t('settings.agentInstallation.engineAutoOption')}</option>
-                    <option value="pi">{agentEngineLabel('pi')}</option>
-                    <option value="omp">{agentEngineLabel('omp')}</option>
+                    <option value="pi">{agentEngineName('pi')}</option>
+                    <option value="omp">{agentEngineName('omp')}</option>
                   </select>
                 </div>
               )}
@@ -1124,7 +1124,7 @@ export function SettingsPanel(): React.JSX.Element {
         <div className="mt-8 flex gap-3">
           <button
             onClick={handleSave}
-            className="flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm text-white hover:bg-accent-hover transition-colors"
+            className="flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm text-inverse hover:bg-accent-hover transition-colors"
           >
             {saved ? <Check size={14} /> : <Save size={14} />}
             {saved ? t('settings.actions.saved') : t('settings.actions.save')}
@@ -1178,7 +1178,7 @@ export function SettingsPanel(): React.JSX.Element {
                   setShowCouncilWarning(false)
                   void saveCouncil({ enabled: true })
                 }}
-                className="rounded-md bg-accent px-4 py-2 text-sm text-white hover:bg-accent-hover transition-colors"
+                className="rounded-md bg-accent px-4 py-2 text-sm text-inverse hover:bg-accent-hover transition-colors"
               >
                 {t('settings.councilEnabled.confirmButton')}
               </button>
@@ -1351,8 +1351,8 @@ function Toggle({
       }`}
     >
       <span
-        className={`inline-block h-3.5 w-3.5 rounded-full bg-white transition-transform ${
-          checked ? 'translate-x-4' : 'translate-x-1'
+        className={`inline-block h-3.5 w-3.5 rounded-full transition-transform ${
+          checked ? 'translate-x-4 bg-inverse' : 'translate-x-1 bg-primary'
         }`}
       />
     </button>

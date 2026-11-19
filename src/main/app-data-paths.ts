@@ -3,7 +3,7 @@ import { existsSync } from 'fs'
 import { dirname, join, resolve } from 'path'
 
 export const GUI_DATA_ENV_VAR = 'PI_DESKTOP_USER_DATA_DIR'
-export const CANONICAL_GUI_DATA_DIR_NAME = 'pi-desktop'
+export const CANONICAL_GUI_DATA_DIR_NAME = 'sessrumnir'
 export const LEGACY_GUI_DATA_DIR_NAME = '.pi-desktop-gui'
 export const LEGACY_ELECTRON_GUI_DATA_DIR_NAMES = ['PI Desktop', 'pi-desktop-gui'] as const
 
