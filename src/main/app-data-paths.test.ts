@@ -16,14 +16,14 @@ import {
 } from './app-data-paths'
 
 test('getCanonicalUserDataDir appends the canonical dir name', () => {
-  assert.equal(getCanonicalUserDataDir('/home/test/.config'), '/home/test/.config/pi-desktop')
+  assert.equal(getCanonicalUserDataDir('/home/test/.config'), '/home/test/.config/sessrumnir')
   assert.equal(
     getCanonicalUserDataDir('/Users/test/Library/Application Support'),
-    '/Users/test/Library/Application Support/pi-desktop'
+    '/Users/test/Library/Application Support/sessrumnir'
   )
   assert.equal(
     getCanonicalUserDataDir('C:\\Users\\test\\AppData\\Roaming'),
-    'C:\\Users\\test\\AppData\\Roaming/pi-desktop'
+    'C:\\Users\\test\\AppData\\Roaming/sessrumnir'
   )
 })
 

@@ -81,7 +81,7 @@ function tokenLabel(name: string): string {
 // reads it via `useAppStore.getState()` at cleanup time rather than through
 // the hook, so the two call sites can't share a `useAppStore(...)` call.
 function resolveSettingsThemeId(state: ReturnType<typeof useAppStore.getState>): string {
-  return state.settingsDraft.theme ?? state.settings?.theme ?? 'fensalir'
+  return state.settingsDraft.theme ?? state.settings?.theme ?? 'dark'
 }
 
 export function ThemeEditor({
@@ -262,7 +262,7 @@ export function ThemeEditor({
                     className={clsx(
                       'px-3 py-1.5 text-sm transition-colors',
                       draft.kind === kind
-                        ? 'bg-accent text-white'
+                        ? 'bg-accent text-inverse'
                         : 'text-muted hover:bg-surface-hover'
                     )}
                   >
@@ -387,7 +387,7 @@ export function ThemeEditor({
               type="button"
               onClick={save}
               disabled={nameEmpty || saving}
-              className="rounded-md bg-accent px-4 py-2 text-sm text-white hover:bg-accent-hover transition-colors disabled:opacity-50"
+              className="rounded-md bg-accent px-4 py-2 text-sm text-inverse hover:bg-accent-hover transition-colors disabled:opacity-50"
             >
               {saving ? t('themes.editor.savingLabel') : t('common.save')}
             </button>

@@ -26,8 +26,6 @@ import { useAppStore } from './store'
 import { useEffect } from 'react'
 import { ArrowUpCircle, FolderOpen, PanelLeft, X } from 'lucide-react'
 
-import EmberBackground from './components/EmberBackground'
-
 export function App(): React.JSX.Element {
   const { t } = useTranslation()
   usePiEvents()
@@ -97,7 +95,6 @@ export function App(): React.JSX.Element {
 
   return (
     <div className="relative flex h-screen flex-col bg-app text-primary">
-      <EmberBackground />
       {isDraggingFolder && (
         <div
           className="pointer-events-none absolute inset-0 z-[100] flex items-center justify-center bg-app/80 backdrop-blur-sm"
@@ -117,7 +114,7 @@ export function App(): React.JSX.Element {
         </div>
       )}
       {showUpdateBanner && updateInfo && (
-        <div className="flex shrink-0 items-center justify-center gap-3 bg-accent px-4 py-1.5 text-xs text-white">
+        <div className="flex shrink-0 items-center justify-center gap-3 bg-accent px-4 py-1.5 text-xs text-inverse">
           <ArrowUpCircle size={14} className="shrink-0" />
           <span>
             <Trans
@@ -128,7 +125,7 @@ export function App(): React.JSX.Element {
           </span>
           <button
             onClick={() => window.piDesktop.system.openExternal(updateInfo.url)}
-            className="rounded bg-white/20 px-2 py-0.5 font-medium hover:bg-white/30 transition-colors"
+            className="rounded bg-inverse/20 px-2 py-0.5 font-medium hover:bg-inverse/30 transition-colors"
           >
             {t('app.updateBanner.downloadButton')}
           </button>
