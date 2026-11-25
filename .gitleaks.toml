@@ -15,13 +15,13 @@ useDefault = true
 [[allowlists]]
 description = "the vendored wards name the shapes they hunt; they carry no credential"
 paths = [
-  '''^bin/gates/guards/''',
-  '''^bin/gates/secret-scan\.sh$''',
-  '''^bin/forge/pr-patterns\.sh$''',
+  '''(^|/)bin/gates/guards/''',
+  '''(^|/)bin/gates/secret-scan\.sh$''',
+  '''(^|/)bin/forge/pr-patterns\.sh$''',
 ]
 
 [[allowlists]]
 description = "a session file name used as a test input (a timestamp and an id), not a credential"
 condition = "AND"
-paths = ['''^src/renderer/src/utils/session-title\.test\.ts$''']
+paths = ['''(^|/)src/renderer/src/utils/session-title\.test\.ts$''']
 regexes = ['''2026-07-04T13-34-18-375Z_019f2d56''']
